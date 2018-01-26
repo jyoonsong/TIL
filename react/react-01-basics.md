@@ -1,4 +1,4 @@
-####1. React의 개념 및 Virtual DOM
+## 1. React의 개념 및 Virtual DOM
 
 - **React란?**
   - 재사용 가능한 UI를 생성할 수 있도록 해주는 라이브러리.
