@@ -70,6 +70,10 @@
 
     3) 바뀐 부분만 브라우저 상의 실제 DOM에 적용
 
+
+
+
+
 - **React 특징 및 장단점**
 
   - 특징
@@ -99,6 +103,8 @@
     - View레이어만 다루므로 이외의 부분은 다른 모듈 사용해야 함 (Ajax, Router 등)
     - React 버전 v15부터 IE8이하 버전을 지원하지 않음
 
+  ​
+
 - **webpackbin으로 React 맛보기**
 
   ```jsx
@@ -119,6 +125,8 @@
   - Return 안에 따옴표가 없는 게 JSX의 특징
   - JSX에서 JavaScript 값을 렌더링할 때에는 `{}`로 감싸면 된다.
 
+  ​
+
   ```jsx
   // main.js
   import React from 'react'
@@ -138,6 +146,8 @@
 
     - 파라미터1 - 렌더링될 것. JSX형태 코드. `<컴포넌트명/>`
     - 파라미터2 - 렌더링할 곳. HTML 요소.
+
+  ​
 
   ```html
   <!-- index.html -->
