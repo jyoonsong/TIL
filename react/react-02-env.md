@@ -8,7 +8,7 @@
 
 - **Dependency/Plugin**
 
-  - **react** - `npm install —save react react-dom`
+  - **react** - Component를 만들 때 사용된다. `npm install —save react react-dom`
 
   - **babel** - ES6 지원하지 않는 환경에서 ES6을 사용할 수 있게 해줌
 
@@ -99,12 +99,15 @@
     - Naming Convention - 파일 및 컴포넌트 이름 대문자로 시작
 
     ```javascript
-    import React from 'react'; // require('react');
+    import React from 'react'; // [ES5] var React = require('react');
 
-    class App extends React.Component {
-        render(){
-            return (
+    class App extends React.Component { 
+    // [ES5] React.createClass() - method nest 불가. prototype 사용해야 했음.
+    // 모든 Component는 React.Component를 상속
+        render(){ // Component에 렌더링될 데이터를 정의
+            return ( // 필수는 아니지만 가독성을 위해 괄호 사용 권장
             	<h1>Hello React Skeleton</h1>
+              	// React JSX는 xml-like Syntax를 Native JavaScript로 변환해주므로 따옴표로 감싸지 않는다.
             );
         }
     }
