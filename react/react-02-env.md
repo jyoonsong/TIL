@@ -96,7 +96,7 @@
 
   - **src/components/App.js** - 컴포넌트
 
-    - Naming Convention - 파일 및 컴포넌트 이름 대문자로 시작
+    - Naming Convention - 파일 및 컴포넌트 이름 대문자로 시작하는 CamelCase
 
     ```javascript
     import React from 'react'; // [ES5] var React = require('react');
