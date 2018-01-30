@@ -111,7 +111,7 @@
 - 변수는 적용 범위(scope)를 가짐
 
   - Class 밖 = 불가능
-  - Class 안 Method 밖 = Class 내에서 사용 가능<br>
+  - Class 안 Method 밖 = Class 내에서 사용 가능<br> 
   **Class Members** - 두 개 이상 메서드에서 공통으로 사용될 경우
   - Method (블록) 안 = 그 Method (블록) 내부에서만 사용 가능 
 
