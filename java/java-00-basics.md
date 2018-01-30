@@ -88,13 +88,13 @@
 
   - Primitive Type (미리 가지고 있는 기본 타입)
 
-    - byte	정수
-    - short	정수 
-    - int		정수		0으로 초기화
-    - long	정수
-    - float	소수
+    - byte	  정수
+    - short	  정수 
+    - int		  정수		0으로 초기화
+    - long	  정수
+    - float	  소수
     - double	소수
-    - char	문자 하나
+    - char	  문자 하나
     - boolean	참/거짓
 
   - 준 primitive type
@@ -111,7 +111,8 @@
 - 변수는 적용 범위(scope)를 가짐
 
   - Class 밖 = 불가능
-  - Class 안 Method 밖 = Class 내에서 사용 가능
+  - Class 안 Method 밖 = Class 내에서 사용 가능<br>
+  **Class Members** - 두 개 이상 메서드에서 공통으로 사용될 경우
   - Method (블록) 안 = 그 Method (블록) 내부에서만 사용 가능 
 
 <br>
