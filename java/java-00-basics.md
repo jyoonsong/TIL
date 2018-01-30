@@ -5,7 +5,7 @@
 - JDK (Java SE Development Kit) @Oracle 
 - Eclipse (에디터)
 
-
+<br>
 
 2. **디렉토리 구조**
 
@@ -14,7 +14,7 @@
   - 대문자로 시작하는 관습.
   - Class 생성 시 public static void main 생성 체크 권장.
 
-
+<br>
 
 3. **프로그래밍 언어의 공통 개념**
 
@@ -25,7 +25,7 @@
   - 반복문 for / while
 - 입출력 방법
 
-
+<br>
 
 4. **Eclipse 사용 TIP**
 
@@ -33,7 +33,7 @@
 - 들여쓰기 자동 => `ctrl + i` / `Source - correct indentation`
 - import문 생성 => `Source - organize import`
 
-
+<br>
 
 5. **C vs Java** 차이
 
@@ -60,7 +60,7 @@
 
   - Variable Length Array 지원
 
-  ​
+<br>
 
 6. **입출력**
 
@@ -80,7 +80,7 @@
     - `nextLine()` string을 줄바꿈으로 잘라서 받음
   - `변수명.close();`
 
-
+<br>
 
 7. **변수**
 
@@ -114,7 +114,7 @@
   - Class 안 Method 밖 = Class 내에서 사용 가능
   - Method (블록) 안 = 그 Method (블록) 내부에서만 사용 가능 
 
-
+<br>
 
 8. **배열**
 
@@ -134,7 +134,7 @@
 
   `int[] array = new int[n];`
 
-
+<br>
 
 9. **예제**
 
@@ -193,18 +193,18 @@
 
 -  **쌍을 검사** - *반복문 안에 반복문*
 
-  ```java
-  for (int i=0; i<n; i++) { // [0,n)
-    for (int j=i; j<n; j++) { // [i,n)
-      // (0,0) (0,1) (0,2) ... (n-2, n-1) (n-1, n-1)
+    ```java
+    for (int i=0; i<n; i++) { // [0,n)
+      for (int j=i; j<n; j++) { // [i,n)
+        // (0,0) (0,1) (0,2) ... (n-2, n-1) (n-1, n-1)
+      }
     }
-  }
-  for (int i=0; i<n; i++) { // [0,n]
-    for (int j=0; j<=i; j++) { // [0,i]
-      // (0,0) (1,0) (1,1) ... (n-1, n-2) (n-1, n-1)
+    for (int i=0; i<n; i++) { // [0,n]
+      for (int j=0; j<=i; j++) { // [0,i]
+        // (0,0) (1,0) (1,1) ... (n-1, n-2) (n-1, n-1)
+      }
     }
-  }
-  ```
+    ```
 
 - **구간의 합** - 0개 이상의 연속된 정수들을 더하여 얻을 수 있는 최대값. *구간시작점 루프와 구간 끝점 루프 - 반복문 안에 반복문*
 
