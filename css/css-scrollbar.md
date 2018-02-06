@@ -1,6 +1,8 @@
 ## CSS Scrollbar 없애기
 
-윈도우 혹은 특정 브라우저에서 스크롤바가 다음과 같이 뜨는 경우가 있다:
+윈도우 혹은 특정 브라우저에서 스크롤바가 걸리적거리는 경우가 있다.
+
+특히 table의 경우에는 다음과 같이 더욱 난장판이다:
 
 ![스크롤바 난장판](https://jandi-box.com/files-thumb/13597036/fe8868e9eca403a9d326e1ed41bdc3c3.png?size=640)
 
@@ -19,7 +21,7 @@ th, td {
 ```scss
 th, td {
   overflow-y: hidden;
-  overflox-x: auto; // 스크롤 있는 경우에만 표시
+  overflow-x: auto; // 스크롤 있는 경우에만 표시
 }
 ```
 
