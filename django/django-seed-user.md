@@ -1,4 +1,4 @@
-## dJango 시드 유저 생성하기
+## dJango 시드 유저 비밀번호 변경
 
 ```shell
 In [1]: from django.contrib.auth import get_user_model
