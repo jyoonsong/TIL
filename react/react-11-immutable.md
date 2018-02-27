@@ -206,3 +206,144 @@ nextArr = nextArr.delete(0);
 console.log(nextObj.toJS());
 ```
 
+<br>
+
+#### 2.4. Record
+
+Immutable은 페이스북이 만들었기 때문에 JSX로 이루어진 List를 렌더링할 수 있는 등 React와 호환이 어느정도 된다. 그러나 **state 자체를 Immutable 데이터로 사용하는 것까지는 지원되지 않는다.** 따라서 state 내부에 하나의 Immutable 객체를 만들어두고, 상태 관리를 모두 이 객체를 통해 진행한다.
+
+```jsx
+state = {
+  data: Map({
+    input: '',
+    users: List([
+      Map({
+        id: 1,
+        username: 'velopert'
+      }),
+      Map({
+        id: 2,
+        username: 'mjkim'
+      })
+    ])
+  })
+}
+```
+
+자연히 컴포넌트들에서는 `get` 과 `getIn`을 사용해주어야 한다.
+
+```jsx
+// App.js
+onButtonClick = (e) => {
+  const {data} = this.state;
+
+  this.setState({
+    data: data.set('input', '') // input: ''
+    .update('users', users => users.push( // users.concat 새 Map을 추가
+      Map({
+        id: this.id++,
+        username: data.get('input')
+      })
+    ))
+  })
+}
+render() {
+  const { onChange, onButtonClick } = this;
+  const { data } = this.state;
+  const input = data.get('input');
+  const users = data.get('users');
+}
+// UserList.js
+renderUsers = () => {
+  const { users } = this.props;
+  return users.map((user) => (
+    <User key={user.get('id')} user={user} />
+  ))
+}
+// User.js
+const username = this.props.user.get('username'); // const {username} = this.props.user.toJS(); 비구조화할당
+```
+
+계속 `get`, `getIn`하는 게 싫다면 `Record`를 사용하자! Immutable의 set, update, delete 등을 계속 사용할 수 있으면서도 값을 조회할 때 get, getIn을 사용할 필요없이 `data.input` 같은 방식으로 조회할 수 있다.
+
+> Record는 Typescript 혹은 Flow 같은 타입시스템을 도입할 때 굉장히 유용하다 (이해못함)
+
+```jsx
+import React from 'react';
+import { render } from 'react-dom';
+import App from './App';
+import { Record } from 'immutable';
+
+const Person = Record({
+  name: '홍길동',
+  age: 1
+});
+let person = Person();
+console.log(person); // Obejct {name: "홍길동", age: 1}
+console.log(person.name, person.age); // 홍길동 1
+
+person.set('name', '송재윤'); // person.name = '송재윤'은 오류! person = person.set('job', 5)도 오류!
+console.log(person.name); // 송재윤
+
+// set 대신 이렇게 할 수도 있다
+person = Person({
+  name: "영희",
+  age: 10
+})
+
+// 비구조화 할당도 가능
+const {name, age} = person;
+console.log(name, age);
+
+// 재생성할 일 없을 때
+const dog = Record({
+  name: '멍멍이',
+  age: 1
+})();
+console.log(dog.name); // 멍멍이
+
+// Nesting
+const nested = Record({
+  foo: Record({
+    bar: true
+  })()
+})();
+console.log(nested.foo.bar); // true
+
+// Map 다루듯이 똑같이 사용
+const nextNested = nested.setIn(['foo', 'bar'], false);
+console.log(nextNested.foo.bar); // false
+```
+
+위에서의 컴포넌트 예시도 아래처럼 간편히 바꿀 수 있다
+
+```jsx
+// App.js
+onButtonClick = (e) => {
+  const {data} = this.state;
+
+  this.setState({
+    data: data.set('input', '')
+    .update('users', users => users.push( 
+      new User({ // Map을 new User로
+        id: this.id++,
+        username: data.input // get도 사실 작동하지만 굳이 쓸까
+      })
+    ))
+  })
+}
+render() {
+  const { onChange, onButtonClick } = this;
+  const { data: {input, users} } = this.state; // 일일이 get할 필요 없이 비구조화할당
+}
+// UserList.js
+renderUsers = () => {
+  const { users } = this.props;
+  return users.map((user) => (
+    <User key={user.id} user={user} /> // 바로 user.id
+  ))
+}
+// User.js
+const { username } = this.props.user; // const {user: {username}} = this.props;
+```
+
