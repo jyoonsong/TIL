@@ -248,6 +248,8 @@ export default App;
 
 - **외부 패키지 적용**
 
+  `~`는 node_modules 내부의 디렉토리를 가리켜준다.
+
   ```scss
   @import '~include-media/dist/include-media';
   ```
