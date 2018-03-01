@@ -174,7 +174,7 @@ function calculateTax(price) {
 
 
 
-### 4. 예제
+### 4. 예제 (without React)
 
 ```html
 <!DOCTYPE html>
