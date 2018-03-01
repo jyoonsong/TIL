@@ -119,62 +119,7 @@ store에 모든 데이터가 담겨 있다. 컴포넌트끼리는 직접 교류�
 
 
 
-### 3. Redux의 3원칙
-
-#### 3.1. Single Source of Truth
-
-Redux를 사용하면 모든 state가 단 한 개의 store에 있다. (이는 Flux와의 큰 차이점이다. Flux는 여러 개의 store를 사용한다.)
-
-> store의 데이터 구조는 보통 매우 **nested**되어 있다. 즉 JavaScript 객체로서 `{{{},{},{}},{} }` 이런 식으로 잘 정리되어 있다는 의미이다.
-
-<br>
-
-#### 3.2. State is read-only
-
-> The only way to mutate the state is to **emit an action**, an ovject describing what happened
-
-Application에서는 직접 state를 변경할 수 없다. state를 변경하기 위해서는 **action이 dispatch되어야만 한다**. action은 어떤 변경이 이루어져야 할지 알려주는 객체이다.
-
-<br>
-
-#### 3.3. Changes are made with Pure Functions
-
-> To specify how the state tree is transformed by actions, you write **pure reducers**
-
-action을 dispatch 하여 state값을 변경하는 과정에서 **받아온 action 객체를 처리하는 함수를 Reducer**라고 부른다. 즉 action이 어떤 변화가 일어나야 할지 알려주는 객체라면, Reducer는 그 action 객체와 previous state를 받고, next state를 return하는 함수인 것이다.
-
-이때 **Reducer는 Pure Function**이어야 한다. Pure Function이란, 
-
-1. The function always returns the same result if the same arguments are passed in. It does not depend on any state, or data, change during a program’s execution. It must **only depend on its input arguments**.
-2. The function does not produce any observable **side effects** such as: Network requests (HTTP requests), Input and output devices (printing to screen or console), data mutation, DOM Query/Manipulation etc.
-
-Pure function의 예시는 다음과 같다:
-
-```js
-// IS pure function
-function priceAfterTax(price) {
-  return price + (price * 0.2);
-}
-// NOT pure function
-var taxRate = 20;
-function calculateTax(price) {
- return (price * (taxRate/100)) + price; 
-}
-```
-
-결국 다음과 같은 것들을 지키면 되는 것이다:
-
-- 외부 네트워크/데이터베이스에 접근하지 않아야 한다
-- return 값은 오직 parameter값에만 의존해야 한다.
-- parameter는 직접 변경되지 않아야 한다.
-- 같은 parameter로 실행된 함수는 언제나 같은 결과를 return한다
-- 순수하지 않은 API 호출을 하지 말아야 한다. (Date, Math 함수 등)
-
-<br>
-
-
-
-### 4. 예제 (without React)
+### 3. 예제
 
 ```html
 <!DOCTYPE html>
