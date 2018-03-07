@@ -63,7 +63,7 @@ function calculateTax(price) {
 
 
 
-### 2. Redux with React
+### 2. Structure
 
 #### 2.0. 개발 환경 세팅
 
@@ -122,3 +122,383 @@ function calculateTax(price) {
   - `index` - configure에서 import한 생성 함수를 사용하여 **store를 생성하고, export**
 
   - `actionCreators` - 
+
+<br>
+
+
+
+### 3. Reducer와 Action
+
+#### 3.1. Ducks 구조
+
+하나의 파일에 reducer와 action을 함께 작성하는 것. (기존 방식으로는 새 액션을 추가할 때마다 두 개의 파일을 건드려야 하므로 불편하다.)
+
+```jsx
+// modules/counter.js
+// 액션 타입 정의
+const INCREMENT = 'counter/INCREMENT'; // 앞에 도메인을 붙임으로써 서로 다른 모듈에서도 같은 액션 이름을 사용 가능
+const DECREMENT = 'counter/DECREMENT';
+
+// 액션 생성 함수
+export const increment = () => ({ type: INCREMENT });
+export const decrement = () => ({ type: DECREMENT });
+
+// 모듈의 state 초기값 정의
+const initialState = {
+	number: 0
+};
+
+// reducer function
+export default function reducer(state = initialState, action) { // 디폴트 값 설정 문법
+	// reducer는 action type에 따라 변화된 state를 반환
+	switch(action.type) {
+		case INCREMENT:
+			return { number: state.number + 1 };
+		case DECREMENT:
+			return { number: state.number - 1 };
+		default:
+			return state; // 아무 일도 일어나지 않으면 현재 상태 그대로 반환 
+	}
+}
+```
+
+<br>
+
+#### 3.2. 액션 생성함수 => createAction
+
+```jsx
+// 액션 생성 함수를 만듭니다.
+export const increment = createAction(INCREMENT);
+export const decrement = createAction(DECREMENT);
+```
+
+Redux-actions의 `createAction` 함수는 **세 가지 파라미터**를 받는다.
+
+- `type` - action 이름 (action type의 변수명) 
+- `payloadCreator ` - 생략된 경우 action 생성 함수 사용 시의 **파라미터 그대로 반환**
+- `metaCreator` - 생략된 경우 meta 값을 따로 생성하지 않는다.
+
+```jsx
+const changeInput = createAction('CHANGE_INPUT');
+changeInput('새로운 값'); // { type: 'todo/CHANGE_INPUT', payload: '새로운 값' }
+
+const multi = createAction('MULTI');
+multi({ foo: 1, bar: 2 }); // { type: 'MULTI', payload: { foo: 1, bar: 2 } }
+
+const sample = createAction('SAMPLE', // type
+	(value) => value + 1, // payloadCreator
+	(value) => value - 1 // metaCreator
+);
+sample(1); // { type: 'SAMPLE', payload: 2, meta: 0 }
+```
+
+
+
+<br>
+
+#### 3.3. switch문 => handleActions 
+
+switch문은 block이 따로 나뉘어 있는 것이 아니므로 불편하다. const 혹은 let의 스코프가 `{}`으로 제한되어 있기 때문이다. 모든 case는 하나의 block 안에 있기 때문에 아래와 같은 귀찮은 일이 발생한다.
+
+```js
+switch(value) {
+  case 0: 
+    const a = 1;
+    break;
+  case 1:
+    const a = 2; // ERROR!
+    break;
+  default:
+}
+```
+
+이를 방지하기 위해 handleActions를 사용해서 reducer 함수를 작성하는 것.
+
+```jsx
+// 파라미터 handleActions({액션을 처리하는 함수들로 이루어진 object}, 초기 state)
+export default handleActions({
+  [INCREMENT]: (state, action) => { // 정통 문법
+    return { number: state.number + 1 };
+  },
+  [DECREMENT]: ({ number }) => ({ number: number - 1 }) // 비구조화 할당 + action 참조하지 않으면 생략
+}, initialState)
+```
+
+<br>
+
+#### 3.4. combineReducers로 reducer 합치기
+
+컴포넌트가 많아지면 한 프로젝트에 reducer 함수가 여러 개 존재하게 된다. 이를 redux의 함수 `combineReducers`로 하나의 reducer로 합쳐주도록 하자. 이렇게 합쳐진 reducers는 **Root Reducer**라고 부른다.
+
+```jsx
+// modules/index.js
+import { combineReducers } from 'redux';
+import counter from './counter';
+
+export default combineReducers({
+  counter
+  // 여기 추가해주면 된다.
+});
+```
+
+<br>
+
+
+
+### 4. Store
+
+#### 4.1. `configure` - store 생성 함수 정의
+
+```jsx
+import { createStore } from 'redux';
+import modules from './modules'; // 자동으로 index.js '파일' 불러옴. 폴더로 착각마삼.
+
+const configure = () => {
+  const store = createStore(modules);
+  return store;
+}
+
+export default configure;
+```
+
+개발의 편의를 위해 `redux-devtools`를 사용하려면 아래와 같이 코드를 추가해준다.
+
+```diff
+import { createStore } from 'redux';
+import modules from './modules';
+
+const configure = () => {
++ const devTools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
++ const store = createStore(modules, devTools);
+  return store;
+}
+
+export default configure;
+```
+
+<br>
+
+#### 4.2. `store/index` - store 생성 & export
+
+```jsx
+import configure from './configure'; // 생성함수 import
+export default configure(); // store의 생성(생성함수 호출)과 동시에 export
+```
+
+<br>
+
+
+
+### 5. Redux with React 
+
+#### 5.1. `Root.js`에서 `Provider`로 연결하기
+
+store과 components 사이의 연결을 위해 우리는 일단 `Root.js`로 `store`을 보내 각 컴포넌트가 `store`의 `state`와 `dispatch`를 상속받을 수 있도록 해야 한다.
+
+이를 도와주는 녀석이 바로 `Provider`. 이 녀석에게 `store={store}`로 보내주면 된다.
+
+```diff
+import React from 'react';
++ import { Provider } from 'react-redux';
++ import store from './store';
+
+import App from './components/App';
+
+const Root = () => {
+  return (
++   <Provider store={store}>
+      <App />
++   </Provider>
+  );
+};
+
+export default Root;
+```
+
+<br>
+
+#### 5.2. Container Components
+
+- `connect(mapStateToProps, mapDispatchToProps)`
+
+  Component를 Redux와 연동. 컴포넌트에 props를 넣어줄 함수를 리턴한다.
+
+- `connect(mapStateToProps, mapDispatchToProps)(CounterContainer)`
+
+  컴포넌트에 props를 넣어줄 함수에 해당 컴포넌트를 파라미터로 넣어준다. 그러면 그 컴포넌트로 props가 보내짐.
+
+```jsx
+// containers/CounterContainer.js
+import React, { Component } from 'react';
+import Counter from 'components/Counter';
+import { connect } from 'react-redux';
+import * as counterActions from 'store/modules/counter';
+
+class CounterContainer extends Component {
+  handleIncrement = () => {
+    this.props.increment();
+  }
+
+  handleDecrement = () => {
+    this.props.decrement();
+  }
+  
+  render() {
+    const { handleIncrement, handleDecrement } = this;
+    const { number } = this.props;
+
+    return (
+      <Counter 
+        onIncrement={handleIncrement}
+        onDecrement={handleDecrement}
+        number={number}
+      />
+    );
+  }
+}
+
+// input: store의 states
+// output: component로 보낼 props
+const mapStateToProps = (state) => ({
+  number: state.counter.number
+});
+
+// input: dispatch
+// output: component로 보낼 액션 함수들 (예: handleIncrement, handleDecrement)
+const mapDispatchToProps = (dispatch) => ({
+  increment: () => dispatch(counterActions.increment()),
+  decrement: () => dispatch(counterActions.decrement()) 
+  // dispatch 함수에는 action을 실어 보낸다.
+})
+
+// 컴포넌트를 리덕스와 연동 할 떄에는 connect 를 사용합니다.
+// connect() 의 결과는, 컴포넌트에 props 를 넣어주는 함수.
+// 반환된 함수에 다시 우리가 만든 컴포넌트를 넣어주면 됩니다.
+export default connect(mapStateToProps, mapDispatchToProps)(CounterContainer);
+```
+
+`mapStateToProps`와 `mapDispatchToProps`를 아예 `connect()` 내부에서 정의하면 코드가 더 깔끔해진다.
+
+```jsx
+export default connect(
+  (state) => ({
+    number: state.counter.number
+  }),
+  (dispatch) => ({
+    increment: () => dispatch(counterActions.increment()),
+    decrement: () => dispatch(counterActions.decrement())
+  })
+)(CounterContainer);
+```
+
+나중에 여러 모듈에서 액션 생성 함수를 참조해야 할 때는 `bindActionCreators`를 사용하여 바인딩한 후, 이 결과물을 `CounterActions`라는 props로 넣어주게 된다. 일일이 `dispatch( someActionCreator() )` 해주는 것이 번거롭기 때문이다.
+
+```Diff
+import React, { Component } from 'react';
+import Counter from 'components/Counter';
+import { connect } from 'react-redux';
++ import { bindActionCreators } from 'redux';
+import * as counterActions from 'store/modules/counter';
+
+class CounterContainer extends Component {
+  handleIncrement = () => {
++ 	const { ConterActions } = this.props;
++   CounterActions.increment();
+  }
+
+  handleDecrement = () => {
++   const { ConterActions } = this.props;
++   CounterActions.decrement();
+  }
+  
+  render() {
+    const { handleIncrement, handleDecrement } = this;
+    const { number } = this.props;
+
+    return (
+      <Counter 
+        onIncrement={handleIncrement}
+        onDecrement={handleDecrement}
+        number={number}
+      />
+    );
+  }
+}
+
+export default connect(
+  (state) => ({
+    number: state.counter.number
+  }),
+  (dispatch) => ({
++   CounterActions: bindActionCreators(counterActions, dispatch)
+  })
+)(CounterContainer);
+```
+
+<br>
+
+
+
+### 5. 실습
+
+#### 5.1. `createAction`
+
+```jsx
+// store/modules/todo.js
+import { createAction } from 'redux-actions';
+
+const CHANGE_INPUT = 'todo/CHANGE_INPUT';
+const INSERT = 'todo/INSERT';
+const TOGGLE = 'todo/TOGGLE';
+const REMOVE = 'todo/REMOVE';
+
+export const changeInput = createAction(CHANGE_INPUT);
+export const insert = createAction(INSERT);
+export const toggle = createAction(TOGGLE);
+export const remove = createAction(REMOVE);
+```
+
+이번에 만들 액션 생성 함수는 **참조해야 할 값**이 필요하다. 예컨대 `changeInput`은 다음에 어떤 값으로 바뀌어야 할지를 알려주는 값이 필요하고, `insert`는 추가할 내용, `toggle`과 `remove`는 어떤 것을 수정할지 `id`를 알려줘야 한다.
+
+위에서 언급했듯이 `createAction`을 통해 만든 액션 생성함수에 파라미터를 넣어서 호출하면 **자동으로 payload라는 이름으로 통일되어 설정된다**. 따라서 이를 반영하여 아래와 같이 코드를 수정할 수 있다.
+
+```jsx
+export const changeInput = createAction(CHANGE_INPUT, value => value);
+export const insert = createAction(INSERT, text => text);
+export const toggle = createAction(TOGGLE, id => id);
+export const remove = createAction(REMOVE, id => id);
+```
+
+<br>
+
+#### 5.2. immutable.js
+
+```jsx
+let id = 0; // todo 아이템에 들어갈 고유 값 입니다
+
+const initialState = Map({
+  input: '',
+  todos: List()
+});
+
+export default handleActions({
+  // 한줄짜리 코드로 반환 할 수 있는 경우엔 다음과 같이 블록 { } 를 생략 할 수 있습니다.
+  [CHANGE_INPUT]: (state, action) => state.set('input', action.payload),
+  [INSERT]: (state, { payload: text }) => {
+    // 위 코드는 action 객체를 비구조화 할당하고, payload 값을 text 라고 부르겠다는 의미입니다.
+    const item = Map({ id: id++, checked: false, text }); // 하나 추가 할 때마다 id 값을 증가시킵니다.
+    return state.update('todos', todos => todos.push(item));
+  },
+  [TOGGLE]: (state, { payload: id }) => {
+    // id 값을 가진 index 를 찾아서 checked 값을 반전시킵니다
+    const index = state.get('todos').findIndex(item => item.get('id') === id);
+    return state.updateIn(['todos', index, 'checked'], checked => !checked);
+  },
+  [REMOVE]: (state, { payload: id }) => {
+    // id 값을 가진 index 를 찾아서 지웁니다.
+    const index = state.get('todos').findIndex(item => item.get('id') === id);
+    return state.deleteIn(['todos', index]);
+  }
+}, initialState);
+```
+
