@@ -129,23 +129,9 @@
 
 <br>
 
+### 
 
-
-### 5. 자주 쓰이는 메서드
-
-- `hasNext()` - Detect End of File (import java.util.Scanner)
-- `equals()` - true/false
-- `compareTo()` - str1이 더 뒤이면 >0 / 같으면 =0 / 더 앞이면 <0 (부등호 그대로 가져온다고 기억하기)
-- `compareToIgnoreCase()` - 대소문자 구분 없이 비교
-
-
-
-
-<br>
-
-
-
-### 6. 예제
+### 5. 예제
 
 - **2차원 배열에서 소수 찾기**
 
