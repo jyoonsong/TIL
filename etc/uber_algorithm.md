@@ -68,7 +68,7 @@ Parameter Combination을 조정해가며 Output이 어떻게 달라지는지 관
 
     - new passengers can pop up into city
 
-      > 이 글에서는 simplicity를 위해 배제
+      > simplicity를 위해 설명에서 배제
 
   - Driver Behavior
 
@@ -169,6 +169,9 @@ random drive가 1,2번째 output에 있어서는 긍정적 결과를 보이지�
 ### 적용
 
 - Dispatch
+
+  Driver가 drive 사이에 어떤 상태로 있어야 optimal(earnings)한가?
+
 - Simulation Variables
 
 
