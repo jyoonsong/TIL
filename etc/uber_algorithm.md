@@ -1,6 +1,6 @@
 # [Uber] Optimizing a dispatch system using an AI simulation framework
 
-### Goal
+### 0. Goal
 
 - **Optimization** of two goals
   - Rider - **getting you a ride** when you need it
@@ -17,9 +17,9 @@
     - **slow hours - willing** to pick up passengers who are far away 
     - **busy hours - less likely** to accept passengers with longer pickup times
 
+---
 
-
-### How? 
+### 1. How? 
 
 by **Agent-based modeling**
 
@@ -39,9 +39,9 @@ ABM의 주요 개체(Entity)는 환경(Environment) 안에서 작동하는 **행
 - 에이전트의 행동(action)은 **규칙**의 집합에 의해 결정됨
   - 규칙은 **condition -> action(s)**의 형태
 
+---
 
-
-### Simulation
+### 2. Simulation
 
 Parameter Combination을 조정해가며 Output이 어떻게 달라지는지 관찰.
 
@@ -84,9 +84,9 @@ Parameter Combination을 조정해가며 Output이 어떻게 달라지는지 관
   - Average distance driven (on *and* off trips)
   - Average driver earnings
 
+---
 
-
-### Result
+### 3. Result
 
 - Dispatch Distance => Output
 
@@ -163,3 +163,13 @@ random drive가 1,2번째 output에 있어서는 긍정적 결과를 보이지�
 - Eliminating Randomness
   - Drivers working with Uber have access to real-time demand information and
     are less subject to randomness when searching for a passenger
+
+---
+
+### 적용
+
+- Dispatch
+- Simulation Variables
+
+
+
