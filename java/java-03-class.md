@@ -233,98 +233,52 @@ Person [] members = new Person[8];
 
 
 
-### 예제
+### 5. 정리
 
-- `new`를 통한 생성 까먹지 말자
+- Class : 허상. 설계도.
+- Object: 실체. 설계도를 따라 만들어진 실제 집.
+- Reference Variable: Object를 가리키는 주소를 담는 변수.
 
-  ```java
-  import java.io.File;
-  import java.io.FileNotFoundException;
-  import java.util.Scanner;
+```java
+// Class
+public class Person {
+  int age;
+  String name;
+}
 
-  public class Code1 {
+// Object & Reference Variable
+Person p = new Person();
+a.age = 25;
+a.name = "Eric";
+```
 
-      static Person [] members = new Person[100]; // 배열 생성 까먹지 말 것. 참조변수만 있을 땐 데이터 넣을 수 없음 PointerError
-      static int n = 0;
 
-      public static void main( String [] args ) {
-          // members = new Person[100];
 
-          try {
-              Scanner in = new Scanner(new File("input.txt"));
-
-              while( in.hasNext() ) {
-                  String nm = in.next();
-                  String nb = in.next();
-
-                  members[n] = new Person(); // 객체 생성 까먹지 말 것. 참조변수만 있을 땐 데이터 넣을 수 없음 PointerError
-                  members[n].name = nm;
-                  members[n].number = nb;
-                  n++;
-              }
-
-              in.close();
-          } catch (FileNotFoundException e) {
-              System.out.println("No File Found");
-          }
-
-          for (int i=0; i<n; i++) {
-              System.out.println(members[i].name + " " + members[i].number);
-          }
-      }
-  }
-  ```
+![Object 와 Reference Variable](http://www.hacktrix.com/wp-content/uploads/2013/05/object-reference0.png)
 
 
 
 
 
-2-1 클래스, 객체, 참조변수 (17)
+### 6. C vs Java
 
-- 31
-- 45
-- 59
+| 구분                |             | C                                        | Java                                     |
+| ----------------- | ----------- | ---------------------------------------- | ---------------------------------------- |
+| Primitive Type    | 보통 변수       | int a = 10;<br />char ch = 'x';          | int a = 10;<br />char ch='x';            |
+| ex. int, double.. | 참조 변수 (포인터) | int *p;<br />char *q;                    | X                                        |
+| 사용자 정의 Type       | 보통 변수       | struct person a;<br />a.name = "John";<br />a.number = "000"; | X                                        |
+| ex. 구조체, class..  | 참조 변수 (포인터) | struct person *a;<br />a = malloc(sizeof(…));<br />a->name = "John";<br />a->number = "000"; | Person b;<br />b = new Person();<br />b.name = "David";<br />b.number = "000" |
 
-2-2 메서드와 생성자 (18)
+```c
+// Primitive Type 포인터
+int *p;
+char *q; 
+// Java와 달리 각 타입마다 참조변수가 존재하므로, 보통변수와 구분지어줄 * 기호가 필요하다
 
-- 45
-- 46
-- 56
-
-2-3 Static & Public (19, 21)
-
-- 39
-- 28
-
-3-1 Inheritance (23)
-
-- 41
-- 17
-- 46
-
-3-2 예제  (스케줄러)
-
-- 16
-- 60
-
-3-3 Class Object & Wrapper Class (24)
-
-- 52
-
-3-4 Abstract Class & Interface (24, 25)
-
-- 41
-- 38
-- 44
-- 14
-
-3-5 Generic Programming & Generics (26)
-
-- 33
-- 50
-- 12
-
-
-
-
+// Non-primitive Type 포인터
+struct person *a; // Person b;
+a = malloc(sizeof(...)); // b = new Person();
+a->name = "John";
+// Java와 달리 각 타입마다 참조변수가 존재하므로, 보통변수에 쓰이는 .연산자와 구분지어줄 ->연산자가 필요하다
+```
 
