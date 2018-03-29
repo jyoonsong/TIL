@@ -1,4 +1,4 @@
-# 05. Java 복습 - Static & Public
+# 05. Java 복습 - Static
 
 ### 1. `static`의 개념
 
