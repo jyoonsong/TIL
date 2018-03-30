@@ -46,7 +46,7 @@
 
 
 
-###2.  Inheritance & Constructor
+### 2. Inheritance & Constructor
 
 - Constructor가 **없을 경우 자동으로 No-parameter Constructor가 생성**된다.
 
