@@ -34,7 +34,7 @@
 
 
 
-
+---
 
 ### ADT with JAVA
 
@@ -125,6 +125,9 @@ public class Ball extends Sphere {
 
 
 
+
+
+
 ### Overriding vs Overloading
 
 > **Object Equality** 를 통해 알아보자
@@ -182,7 +185,7 @@ public class Ball extends Sphere {
    - the same name
    - **different number || types of parameters**
 
-   => **다른** 메소드로 취급됨. 
+   => **다른** 메소드로 취급됨. 하나 더 **load**된다
 
    ​	즉 parameter 없이 부르면 원래의 `equals`를 사용하는 셈이고, 
 
