@@ -4,7 +4,7 @@
 
 Each `Node` contains
 - `item` - data (number, string, object...)
-- `next` - link
+- `next` - link (reference variable = 다음 노드의 주소)
 
 ![image](https://user-images.githubusercontent.com/17509651/38616740-07ce2742-3dd0-11e8-953b-61d52811da12.png)
 
