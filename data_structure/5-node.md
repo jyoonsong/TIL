@@ -141,3 +141,23 @@ Node first = new Node(new Integer(9), n);
 
 
 
+
+
+### Reference Variable vs Object
+
+생성문 `Node n = new Node(new Integer(9), new Node()`을 통해 만들어지는 것은
+
+- reference variable `n`
+
+- item = reference variable `n`이 가리키는 곳
+
+  integer 9가 들어간다
+
+- next = reference variable `n`이 가리키는 곳
+
+  next에는 또다른 객체의 reference variable이 들어간다.
+
+- 또다른 객체 생성을 함
+
+  next가 가리키는 곳에 새로운 Node 객체 자리가 만들어짐. 아직 field는 생성안됨.
+
