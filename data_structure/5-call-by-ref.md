@@ -2,13 +2,22 @@
 
 ### Call by Reference
 
-- call 시, formal variable은 actual variable을 가리키는 **reference variable을 복사**
+- call 시, formal variable은 actual variable을 가리키는 **reference variable**
   - method에서 actual variable 값 바꿀 수 있음
+  - 예: FORTRAN
 
 ### Call by Value
 
-- call 시, formal variable은 actual variable의 주소가 아니라 **값을 복사**
+- call 시, formal variable은 actual variable의 **값(주소, 숫자, char 등)을 복사**
   - method에서 actual variable 값 바꿀 수 없음
+
+  - 단, actual variable이 주소(포인터)인 경우 바꿀 수 있음
+
+  - 예: Java
+
+    > Primitive type의 경우 바로 value가 있기 때문에 해당 value가 복사됨
+    >
+    > Object의 경우 reference variable을 거치기 때문에 해당 주소가 복사됨
 
 
 
@@ -18,12 +27,12 @@
 Integer x = new Integer(9);
 int y = 9;
 
-changeNumber(x, new Integer(5)); // 안 바뀜 call by reference
+changeNumber(x, new Integer(5)); // 안 바뀜 call by value
 public void changeNumber(Integer n, Integer k) {
 	n = k;
 }
 
-changeNumber2(x, 5); // 바뀜 call by reference
+changeNumber2(x, 5); // 바뀜 call by value
 public void changeNumber2(Integer n, int k) {
 	n.setValue(k);
 }
