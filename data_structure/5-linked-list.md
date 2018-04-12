@@ -225,7 +225,7 @@ Public class ListReferenceBased implements ListInterface {
 		}
   // 6. removeAll
         public void removeAll() {
-			
+			head = head.getNext( ); // 모두 garbage collection 대상이 됨
         }
   // 7. get
         public Object get(int index) {
@@ -393,60 +393,90 @@ Public class ListReferenceBased implements ListInterface {
 
 
 
-### Ch.5 S34
-
-Call by Reference
-
-- call 시, formal variable은 actual variable을 가리키는 reference variable
-  - actual variable 값 바뀜
-
-Call by Value
-
-- call 시, formal variable은 actual variable의 주소가 아니라 **값을 복사**
-  - actual variable 값 불변
-
-```java
-Integer x = new Integer(9);
-changeNumber(x, new Integer(5)); // 안 바뀜
-
-public void changeNumber(Integer n, Integer k) {
-	n = k;
-}
-
-changeNumber2(x, 5); // 바뀜
-
-public void changeNumber2(Integer n, int k) {
-	n.setValue(k);
-}
-```
+---
 
 
 
-> 함수 call은 stack을 사용해서 이루어짐. (대조적 개념: queue)
+### Circular Linked List
 
-```java
-main() {
-  b();
-  c();
-}
+맨 끝 Node의 next가 맨 앞 Node를 가리키는 Linked List
 
-b() {
-  d();
-  e();
-}
-// main 쌓임 => b 쌓임 => d 쌓임 => d 빼고 e 쌓임 => e뺌 => b 빼고 c 쌓임 => c빼고 main 종료
-```
+![singly circular linked list](https://user-images.githubusercontent.com/17509651/38652106-73ae5c92-3e3f-11e8-95fc-2a2418b0d11b.png)
 
 
 
-> 시간을 dominate하는 작업이 무엇인가가 성능을 결정
->
-> ex. 정렬 => 비교하는 작업. 이에 소요되는 overhead를 최소화 시키는 것이 최적화 목적.
+### Doubly Linked List
+
+next뿐만 아니라 previous도 가지고 있는 Linked List
+
+![doubly linked list](https://user-images.githubusercontent.com/17509651/38652073-499ec586-3e3f-11e8-945d-b7b288a7fc22.png)
+
+- `delete`
+
+  ```java
+  public void remove(int index) {
+    // before
+    Node prev = find(index-1);
+    Node curr = prev.getNext();
+    prev.setNext(curr.getNext());
+    numItems--;
+    // after
+    dNode curr = find(index);
+    curr.getPrev().setNext(curr.getNext());
+    curr.getNext().setPrev(curr.getPrev());
+    numItems--;
+  }
+  ```
+
+- `add`
+
+  ```java
+  public void add(int index, Object item) {
+    // before
+    Node prev = find(index-1);
+    Node newNode = new Node(item, prev.getNext());
+    prev.setNext(newNode);
+    numItems++;
+    // after
+    dNode curr = find(index);
+    dNode newNode = new dNode(item, curr.getPrev(), curr);
+    curr.getPrev().setNext(newNode);
+    curr.setPrev(newNode);
+  }
+  ```
 
 
 
->global variable 최대한 피하자
->
->필요없는 scope에까지 닿는 variable은 에러 유발.
+### Doubly Circular Linked List
 
-- - - ​
+![image](https://user-images.githubusercontent.com/17509651/38652118-7892ce3c-3e3f-11e8-8ed5-f6808f63c323.png)
+
+- `delete`
+
+  ```java
+  public void remove(int index) {
+    dcNode curr = find(index);
+    curr.getPrev().setNext(curr.getNext());
+    curr.getNext().setPrev(curr.getPrev());
+    numItems--;
+  }
+  ```
+
+  => 장점? No need of special treatment for the case of absence in any side
+
+  ​	하나의 Node만 남는 경우, next를 `curr.getNext()`로 설정하려고하면 null이 들어간다. 
+
+  ​	이런식으로 하면 null 처리 안해줘도 되고 자기자신 가리키게 할 수 있음.
+
+- `add`
+
+  ```java
+  public void add(int index, Object item) {
+    dcNode curr = find(index);
+    dcNode newNode = new dcNode(item, curr.getPrev(), curr);
+    curr.getPrev().setNext(newNode);
+    curr.setPrev(newNode);
+  }
+  ```
+
+  ​
