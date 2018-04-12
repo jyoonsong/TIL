@@ -99,4 +99,30 @@ next뿐만 아니라 previous도 가지고 있는 Linked List
   }
   ```
 
-  ​
+---
+
+
+
+### Mixed Structure
+
+복합 구조로 사용 가능
+
+![image](https://user-images.githubusercontent.com/17509651/38652896-ec083566-3e42-11e8-877d-3df465ff4e30.png)
+
+
+
+---
+
+
+
+### 예: Sparse Polynomial
+
+항이 듬성듬성 있는 다항식
+
+> dense polynomial은 크기 10인 array여도 무관.
+>
+> sparse일 경우, 예컨대 x^10 + 1이면 arr[0]과 arr[10]만 숫자 있고 나머진 0이라 낭비.
+
+![image](https://user-images.githubusercontent.com/17509651/38652779-6c006a00-3e42-11e8-8a52-e72bb5f10e87.png)
+
+**다시 한 번 이 그림에서처럼 head는 첫번째 Node를 가리키는 reference variable임에 주의**
