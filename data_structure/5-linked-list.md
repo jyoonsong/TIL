@@ -1,12 +1,12 @@
 # Ch.5 Linked List
 
-> 1. 개념 
+> 1. **개념**
 >    - 왜?
 >    - 정의
-> 2. Node 
+> 2. **Node**
 >    - Head Node
 >    - Dummy Head Node
-> 3. Linked List 구현
+> 3. **Linked List 구현**
 >    - Interface
 >    - Implementation
 >    - 각 Operations
@@ -390,7 +390,6 @@ Public class ListReferenceBased implements ListInterface {
       numItems++;
     }
     ```
-
 
 
 ---
