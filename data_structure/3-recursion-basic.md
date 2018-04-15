@@ -1,0 +1,281 @@
+# Ch.2 Recursion: The Mirrors
+
+### Recursive Algorithm?
+
+- An algorithm that calls itself for subproblems
+
+  The subproblems are of exactly the same type as the original problem – mirror images
+
+- 어떨 땐 약, 어떨 땐 독 (늘 좋은 건 NO)
+
+---
+
+> ### Recursion이 약이거나 같은 경우
+
+### Search in Unsorted Array
+
+- check all n elements 
+  - worst case = `O(n)` (끝에 나옴)
+  - average case = `O(n)` = O(n/2) (딱 중간에 나옴)
+  - best case = `O(1)` (바로 나와서 상수 시간)
+
+### Search in Sorted Array
+
+> binary search
+>
+> 원리는 중간지점 비교하며 보내는 것으로 같지만, while문을 돌려 한 함수에서 해결하느냐 vs Recursion으로 해결하느냐의 차이. 전자는 n을, 후자는 low, high를 parameter로 받는다.
+
+- **Non-recursive**
+  - worst case = `O(log n)`
+  - average case = `O(log n)`
+  - best case = `O(1)`
+
+  ```java
+  BinarySearch(A[], n, x) {
+      low = 0;
+      high = n-1;
+      while (low < high) {
+          mid = (low + high)/2;
+          if (A[mid] < x) low = mid+1;
+          else if (A[mid] > x) high = mid-1;
+          else return mid;
+      }
+      return "Not Found";
+  }
+  ```
+
+- **Recursive**
+
+  - worst case = `O(log n)`
+  - average case = `O(log n)`
+  - best case = `O(1)`
+
+  ```java
+  BinarySearch (A[], x, low, high) {
+      if (low > high) return "Not Found";
+      mid = (low + high)/2;
+      if (A[mid] < x) BinarySearch(A[], mid+1, high);
+     	else if (A[mid] > x) BinarySearch(A[], low, mid-1);
+      else return mid;
+  }
+  // 상수시간 오버헤드를 감수하면 문제의 크기가 반이 된다
+  // n => n/2 => n/4 => n/8 => ... => n/n=(2의log(2)n승)
+  // 크기 1인 문제가 됐을 때 i) 걔가 x ii) x 없음 => 다음 recursion에서 low>high
+  ```
+
+  ​
+
+### Factorial
+
+- **Non-recursive**
+
+  - for루프가 시간을 지배 (나머지 부분은 상수시간 소요) = `Θ(n)` (n에 비례)
+
+  ```java
+  fact(n) {
+      tmp = 1;
+      for (i=1; i<=n; i++) {
+          tmp *= i;
+      }
+      return tmp;
+  }
+  ```
+
+- **Recursive**
+
+  - fact함수가 총 몇 번 호출되는가가 시간을 좌우 = `Θ(n)` (n에 비례)
+
+    n => n-1 => … => 2 => 1 =X=> 0  총 호출 횟수 = n
+
+  ```java
+  fact(n) {
+      if (n == 0) return 1; // base case
+      return n * fact(n-1);
+  }
+  ```
+
+
+
+### Writing a String Backward
+
+- **Recursive**
+
+  ```java
+  writeBackward(s) {
+      if (s == empty) return; // do nothing
+      return s[last] + writeBackward(s - s[last]);
+      // write the last character of s
+      // recursive call without last character
+  }
+  ```
+
+  ```java
+  writeBackward(s) {
+      if (s == empty) return;
+      return writeBackward(s - s[0]) + s[0];
+      // recursive call without first character
+      // write the first character of s
+  }
+  ```
+
+
+
+### Kth Smallest Element in unsorted Array
+
+- **Recursive** (초딩)
+
+  - worst case =  `Θ(n^2)` : k=n이어서 첫번째 비교까지 n번 재귀, 각 call마다 n번 비교루프
+  - average case =  `Θ(kn)` : n번 재귀, 각 call마다 (n-상수)번 비교를 k번 하므로 kn에 비례
+
+  ```java
+  KthSmallest(A[], k, n) {
+      min = minOf(A); // find min
+      compact(A, min); // remove min(맨뒤로) => compact the array
+      if (k == 1) return min;
+      else return KthSmallest(A[], k-1, n-1);
+  }
+
+  minOf(A) { // 내가 추가
+      int min;
+      for (i=0; i<n; i++) {
+          if (min > A[i])
+              min = i;
+      }
+      return min;
+  }
+
+  compact(A, min) { // 내가 추가
+      tmp = A[min];
+      for (i=min+1; i<n; i++) {
+          A[i-1] = A[i];
+      }
+      A[n-1] = tmp;
+  }
+  ```
+
+- **Recursive** (better)
+
+  > **pivotIndex-first+1 잊지 말 것!**
+
+  - `T(n) = Θ(n) + T(n-1)` n에 비례하는 overhead 감수하고 크기가 하나 작은 문제 만남
+  - worst case = `Θ(n^2)`
+  - average case = `Θ(n)`
+
+  ```java
+  KthSmallest(A[], k, first, last) {
+      partition(A, p); // select p => smaller on left, larger on right
+      if (k < pi-first+1) return KthSmallest(A, k, first, pi-1);
+      else if (k == pi-first+1) return p;     
+      else return KthSmallest(A, k-(pi-first+1), pi+1, last);
+  }
+  ```
+
+
+
+### Hanoi Tower
+
+- **Recursive**
+
+  - da
+
+  ```java
+  // objective = move n disks in pole A to pole B
+  move(n, source, destination, spare) {
+      if (n==1) 1 disk from A to B; // base case
+      move(n-1, A, C, B);
+      move(1, A, B, C);
+      move(n-1, C, B, A);
+  }
+  ```
+
+- **[기출] 한 번에 3개까지 옮길 수 있는 버전**
+
+  ```java
+  move (n, source, destination, spare) {
+      if (n==1 || n==2 || n==3) n disks from A to B;
+      move(n-3, A, C, B);
+      move(3, A, B, C);
+      move(n-3, C, B, A);
+  }
+  ```
+
+  **이렇게 하면 n개의 원반을 다 옮기려면 총 몇 번의 이동이 필요한가? (모든 자연수 n에 대하여)**
+
+  => 수학적귀납법으로 증명 `Tn = 2^[n/3] - 1`  가우스 []는 괄호 안 수보다 큰 최소 정수
+
+  - base case 
+
+    n=1, n=2, n=3 대입
+
+  - inductive Case 
+
+    n<k (or n=k-3) 일 때 성립함을 가정하고, n=k일 때 성립함을 보인다.
+
+    (원래는 n=k일 때 성립함을 가정, n=k+1일 때 성립함을 보임)
+
+  - 위 두개 만족하면 모든 n에 대하여 공식이 성립한다
+
+
+
+---
+
+> ### Recursion이 독인 경우
+
+### Fibonacci Sequence
+
+- **Non-recursive**
+
+  - for루프가 시간을 지배 (나머지 부분은 상수시간 소요) = `Θ(n)` (n에 비례)
+
+  ```java
+  fib(n) {
+      t[1] = t[2] = 1;
+      for (i=3; i<=n; i++)
+      	t[i] = t[i-1] + t[i-2];
+      return t[n];
+  }
+  ```
+
+- **Recursive**
+
+  - **중복호출** 
+
+    f(n)이 두 개를 부르고, 그 두 개는 각각 두 개를 부르고, 그 네 개는 각각 두 개를 부르고..
+
+    2의 n/2승보다 크고 `fib(n) = Ω(2^n/2)` 
+
+    2의 n승은 안된다 `fib(n) = O(2^n)`
+
+    > dynamic programming = 재귀적 알고리즘 효율성 문제 해결 총칭(나중)
+
+  ```java
+  fib(n) {
+      if (n <= 2) return 1; // base case
+      return fib(n-1) + fib(n-2);
+  }
+  ```
+
+  ​
+
+### C(n,k)
+
+C(n,k) 	= C(n-1, k-1) + C(n-1, k) 	if 0 < k < n
+
+​		= 1						if k = 0, k = n
+
+​		= 0						if k > n
+
+- **Recursive**
+
+  - **중복호출** - 예컨대 C(4,2)를 부르면 C(2,1)이 2번 수행된다.
+
+  ```java
+  C(n, k) {
+      if (k == 0 || k == n) return 1;
+      else if (k > n) return 0;
+      else return C(n-1, k-1) + C(n-1, k);
+  }
+  ```
+
+
+

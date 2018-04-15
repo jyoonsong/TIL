@@ -197,3 +197,4 @@ Understanding: gathering user’s knowledge
 
 - brainstorming
   - playful rules
+
