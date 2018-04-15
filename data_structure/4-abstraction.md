@@ -4,6 +4,10 @@
 
 ### Data Abstraction
 
+정의: **Focusing on what you can do to a collection of data, not how you do it. **
+
+> providing only essential information to the outside world and hiding their background detail
+
 어떤 큰 일을 작은 의미단위(module)로 분할
 
 중첩되어 큰 작업이 된다.

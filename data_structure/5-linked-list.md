@@ -237,8 +237,8 @@ Public class ListReferenceBased implements ListInterface {
 			}
 		}
 		private Node find(int index) {
-			Node curr = head; 
-			for (int i = 1; i < index; i++) {
+			Node curr = head; // dummy로 시작 find(0)을 위해
+			for (int i = 0; i < index; i++) {
 				curr = curr.getNext( );
 			}
 			return curr;
