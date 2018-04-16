@@ -26,6 +26,7 @@
 > 원리는 중간지점 비교하며 보내는 것으로 같지만, while문을 돌려 한 함수에서 해결하느냐 vs Recursion으로 해결하느냐의 차이. 전자는 n을, 후자는 low, high를 parameter로 받는다.
 
 - **Non-recursive**
+
   - worst case = `O(log n)`
   - average case = `O(log n)`
   - best case = `O(1)`
@@ -46,14 +47,14 @@
 
 - **Recursive**
 
-  - worst case = `O(log n)`
+  - **worst case = `O(log n)` [기출 2003F-1, 2015-1, 2003S-5]**
   - average case = `O(log n)`
   - best case = `O(1)`
 
   ```java
   BinarySearch (A[], x, low, high) {
       if (low > high) return "Not Found";
-      mid = (low + high)/2;
+      mid = (low + high)/2; // 기출 oneThird = low+(high-low+1)/3;
       if (A[mid] < x) BinarySearch(A[], mid+1, high);
      	else if (A[mid] > x) BinarySearch(A[], low, mid-1);
       else return mid;
@@ -62,8 +63,6 @@
   // n => n/2 => n/4 => n/8 => ... => n/n=(2의log(2)n승)
   // 크기 1인 문제가 됐을 때 i) 걔가 x ii) x 없음 => 다음 recursion에서 low>high
   ```
-
-  ​
 
 ### Factorial
 
@@ -255,7 +254,28 @@
   }
   ```
 
-  ​
+  - **[기출] 2012-4 fibonacci recursive algorithm에서 fib()는 최소 root(2^n) -1 번 호출됨을 증명**
+
+    ```bash
+    fib(n)이 fib()를 호출하는 횟수를 c(n)이라고 할 때
+
+    # 1) base case
+    c(1) = 1 >= 루트2-1 (0.1414)
+    c(2) = 2 >= 2-1
+
+    # 2) inductive case
+    k>=1인 모든 정수 k에 대하여 c(k) >= root(2^k)-1, c(k+1) >= root(2^k+1)-1일 때, c(k+2) >= root(2^k+2)이다.
+
+    fib(k+2) = fib(k+1) + fib(k)이기 때문에
+    c(k+2) >= root(2^k)-1 + root(2^k+1)-1 = root(2^k)(root(2)+1)-2
+
+    여기서 root(2^k)(root(2)+1)-2 >= root(2^k+2)이므로 성립.
+    (바로 위 부등식은 root(2^j) >= root(2) - 1 로 정리됨)
+
+    따라서 1보다 크거나 작은 모든 정수 n에 대하여 c(n) >= root(2^n)-1
+    ```
+
+    ​
 
 ### C(n,k)
 
