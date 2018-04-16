@@ -175,8 +175,6 @@
 
 - **Recursive**
 
-  - da
-
   ```java
   // objective = move n disks in pole A to pole B
   move(n, source, destination, spare) {
