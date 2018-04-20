@@ -196,7 +196,7 @@
 
   > 직접적인 position 조작이 아닌 줄여나가는 식으로 변환
   >
-  > +<pre><pre> => <pre><pre> => <pre>
+  > `+<pre><pre> => <pre><pre> => <pre>`
 
   - convert(`*ab`)		ch =`*`, pre = `ab`
     - postfix1 = convert(`ab`)	ch = `a`, pre=`b`   : return  `a` 
