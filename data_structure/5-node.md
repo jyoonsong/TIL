@@ -60,8 +60,8 @@ public class IntegerNode {
 ```
 
 ```java
-IntegerNode n1 = new IntegerNode( );
-IntegerNode n2 = new IntegerNode( );
+IntegerNode n1 = new IntegerNode();
+IntegerNode n2 = new IntegerNode();
 n1.setItem(5);
 n2.setItem(9);
 n2.setNext(null);
