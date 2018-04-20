@@ -12,6 +12,10 @@ Each `Node` contains
 
 1. naive structure
 
+   절차적(C, Fortran) 관점의 방식. 일관성을 가지지 않는다.
+
+   information hiding, data abstraction 측면에서 안 좋음.
+
 ```java
 public class IntegerNode {
 		public int item;
@@ -30,7 +34,9 @@ n1.next = n2; // BAD data abstraction
 
 2. Intermediate Version
 
-   **private**으로 item, next에 직접 접근 X Getter, setter 사용 O
+   **private**으로 "벽을 치자"
+
+   item, next에 직접 접근 X	Getter, setter 사용 O
 
 ```java
 public class IntegerNode {
@@ -130,9 +136,16 @@ public class Node {
 ```
 
 - Since `int` is a primitive type, it **cannot be an inherited class of Object**
+
+  primitive type은 class type에 종속 될 수 없다.
+
 - `java.lang.` package의 `Integer` class를 대신 사용한다.
 
+  따라서 class type으로 만들어줘야 함. 즉 abstraction 꺼풀이 하나 벗겨지면서 느려진 것
+
 ```java
+Node prim = new Node(9, 5); // ERROR
+
 Node n = new Node(new Integer(6));
 Node first = new Node(new Integer(9), n);
 ```

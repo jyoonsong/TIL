@@ -17,11 +17,39 @@
 
 ### 왜?
 
-| List (Array)                             | Linked List                              |
-| ---------------------------------------- | ---------------------------------------- |
-| + intuitively simple                     | - **overhead for linking**               |
-| - **overflow** : 크기가 고정으로 reallocation이 필요 | + **no overflow** : 길이의 제한이 없음.          |
-| - needs **shift** operation for insertion/deletion | + **free from shift overhead** for insertion/deletion |
+| List (Array)                                         | Linked List                                           |
+| ---------------------------------------------------- | ----------------------------------------------------- |
+| + intuitively simple                                 | - **overhead for linking**                            |
+| - **overflow** : 크기가 고정으로 reallocation이 필요 | + **no overflow** : 길이의 제한이 없음.               |
+| - needs **shift** operation for insertion/deletion   | + **free from shift overhead** for insertion/deletion |
+
+- **Array**
+
+  - array는 미리 사이즈 예측 한도를 설정한다. 이는 **overflow**(더 많이 넣고 싶을 때) 또는 **자원낭비**(자리가 남을 때) 초래
+
+    **dynamic data** 환경에 불리 => Linked LIst
+
+  - array에는 꽉꽉 채워넣는다. 무언가 넣거나 뺄 때 다 밀거나 당기는 **shift** 필요한 비효율성
+
+    - average n/2개 `Θ(n)`
+    - worst n개 모두 `Θ(n)`
+    - best 0개
+
+    직관적으로 simple해서 좋긴 하지만 이런 overhead없이 handle하고 싶다 => Linked List
+
+- **Linked List**
+
+  - Node 들이 연속된 공간에 있을 필요 X
+
+    > 실제 데이터에 저장된 주소는 1, 5, 9, 3, 100, 20 이런 식으로 각양각색
+
+    (+) **free from shift overhead**
+
+    (-) **memory fragmentation** 불편함을 감수
+
+    (-) **storage of link** 정확히 두 배 공간이 필요
+
+    > 단점이 많지만 일단 배열이 가진 overflow, shift 단점을 해결
 
 
 
