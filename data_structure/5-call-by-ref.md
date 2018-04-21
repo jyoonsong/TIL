@@ -43,7 +43,7 @@ public void changeNumber3(int m, int k) {
 }
 ```
 
-- 왜 첫번째는 call by reference인데도 안 바뀔까?
+- 왜 첫번째는 안 바뀔까?
 
   ![image](https://user-images.githubusercontent.com/17509651/38651635-4b864d9e-3e3d-11e8-8e41-ed8243b83d7f.png)
 
