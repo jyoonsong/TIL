@@ -22,15 +22,15 @@
 
   > 이렇게 1씩 차이 나는 induction은 고등과정 수학적 귀납법과 일치
 
-  - basis :
+  - **basis** :
 
     moves(1) = 1 = 2^1 - 1
 
-  - inductive hypothesis : 
+  - **inductive hypothesis** :
 
     Assume moves(k) = 2^k - 1
 
-  - inductive conclusion
+  - **inductive conclusion** :
 
     moves(k+1) = 2moves(k) + 1 = 2*(2^k - 1) + 1 = 2^(k+1) - 1
 
@@ -51,11 +51,11 @@
 
   => 수학적귀납법으로 증명 `Tn = 2^[n/3] - 1`  
 
-  - base case 
+  - **base case**
 
     n=1, n=2, n=3 대입
 
-  - inductive Case 
+  - **inductive Case**
 
     n<k (or n=k-3) 일 때 성립함을 가정하고, n=k일 때 성립함을 보인다.
 
