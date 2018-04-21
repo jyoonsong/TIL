@@ -205,20 +205,6 @@ searchS(originCity, destCity) {
 
 
 
-> **[참고] DFS Algorithm** - 어떤 노드로부터 시작해서 방문할 수 있는 모든 것
-
-```java
-DFS(v) {
-  mark[v] <= VISITED;
-  for all x in L(v)
-     if (mark[v] == NO) DFS(x);
-}
-```
-
-> **cf) Dijkstra algorithm => 변형한 것이 A***
->
-> 이 노드로부터 갈 수 있는 최단경로를 다 계산. DFS와 같지만 거리를 계산한다는 것만 차이점.
-
 ------
 
 ### Ex5. 메모리 분할과 Stack
