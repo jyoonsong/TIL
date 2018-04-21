@@ -25,7 +25,7 @@ boolean isPal(w) {
 
 Is there a path from P to Z? 이번엔 queue로 해보자
 
-> P => (f=P) RW => (f=R) WX => (f=W) XSY => (f=X) SY => (f=S) YT => (f=Y) T => Z는 enqueue하지 않고 바로 return true
+> P => (f=P) RW => (f=R) WX => (f=W) XSY => (f=X) SY => (f=S) YT => (f=Y) T => Z는 enqueue되지 않고 바로 return true
 
 ```java
 searchS(originCity, destCity) {
