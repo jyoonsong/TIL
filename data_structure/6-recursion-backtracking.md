@@ -42,7 +42,9 @@
 
             - `placeQueens(5)` 1,2,3은 underAttack. (5,4)에 놓고본다.
               - `placeQueens(6)` while문 다 돌아도 모두 underAttack. 
-            - `placeQueens(5)`로 다시 return. `placeQueens(6)`이 return한 queenPlaced가 false이므로 removeQueen하고 row++한 후 새로운 루프를 돈다. 그러나 다 돌아도 모두 underAttack.
+            - `placeQueens(5)`로 다시 return. `placeQueens(6)`이 return한 queenPlaced가 false이므로 removeQueen하고 row++한 후 새로운 루프를 돈다. 이번에는 (5,8)이 또 가능하다
+              - `placeQueens(6)` while문 다 돌아도 모두 underAttack. 
+            - 그러나 다 돌아도 모두 underAttack.
 
           - `placeQueens(4)`로 다시 return. `placeQueens(5)`가 return한 queenPlaced가 false => removeQueen, 새로운 루프를 돈다. 이번에는 (4,7)이 또 가능하다.
 
