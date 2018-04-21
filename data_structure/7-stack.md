@@ -72,7 +72,7 @@ public class StackArrayBased implements StackInterface {
 ### 2. Reference-based Implementation
 
 - Linked List + Stack => Stack은 **앞**에 붙여야 할 것
-- type은 Node type => 5과에서 등장한 범용 Node
+- type은 `Node` type => 5과에서 등장한 범용 Node
 
 ```java
 public class StackReferenceBased implements StackInterface {
