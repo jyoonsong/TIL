@@ -21,15 +21,20 @@
 
 ### Search in Sorted Array
 
-> binary search
+> **sequential search**
+
+- worst case = `Θ(n)` : 운나쁘면 맨 마지막 <=> best case = `Θ(1)` : 운 좋으면 맨 처음
+- Average case = `Θ(n)` = `Θ(n/2)` : 평균적으로 가운데
+
+> **binary search**
 >
 > 원리는 중간지점 비교하며 보내는 것으로 같지만, while문을 돌려 한 함수에서 해결하느냐 vs Recursion으로 해결하느냐의 차이. 전자는 n을, 후자는 low, high를 parameter로 받는다.
 
 - **Non-recursive**
 
-  - worst case = `O(log n)`
-  - average case = `O(log n)`
-  - best case = `O(1)`
+  - worst case = `Θ(log n)`
+  - average case = `Θ(log n)`
+  - best case = `Θ(1)`
 
   ```java
   BinarySearch(A[], n, x) {

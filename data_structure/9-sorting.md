@@ -1,199 +1,198 @@
 # Ch.09 Sorting
 
-### 정의
+### 1. Selection Sort
 
-- Stack - LIFO(Last In First Out)
+- **Iteration**
 
-- Queue - FIFO (First In First Out) 
+  boundary case: 1개 남았을 때까지
 
-  > 민주적 ㅋㅋ 대부분의 줄 서기에 적용. (급식줄, 오래된 우유부터 먹기 등)
+  - find the largest item
+  - swap it to the rightmost place
+  - exclude the rightmost item
+
+```java
+// non-recursive
+selectionSort(Arr[], n) {
+    for (last = n-1; last >= 1; last--) {
+        largest = indexOfLargest(Arr, last+1);
+        swap Arr[largest] & Arr[last];
+    }
+}
+indexOfLargest(Arr[], size) {
+    largest = 0;
+    for (i=1; i < size; ++i)
+        if (Arr[i] > Arr[largest]) largest = i;
+    return largest;
+}
+```
+
+```java
+// recursive (기출)
+selectionSort(Arr[], n) {
+    if (n > 1) {
+        largest = indexOfLargest(Arr, n);
+    	swap Arr[largest] & Arr[last];
+        selectionSort(Arr[], n-1);
+    }
+}
+indexOfLargest(Arr[], size) {} // 위와 동일
+```
+
+---
+
+### 2. Bubble Sort
+
+- 바깥 for loop = 가장 큰 원소를 끝자리로 옮기고 정렬대상 줄이는 작업 반복 (=선택정렬)
+
+- 안쪽 for loop = 가장 큰 원소를 끝자리로 옮김. (왼쪽부터 이웃한 수를 비교하면서 하나씩 바꿔나감)
+
+  > asymptotic 하게는 selectionSort와 시간 일치 (비교하는 것이 시간을 지배하므로)
   >
-  > 새치기 기능 있지만 나중에 배울 것
-
-------
-
-### Interface
+  > **But 사실 하나하나 swap하는 시간이 더 들긴 함**
 
 ```java
-public interface QueueInterface {
-    public boolean isEmpty( );
-    public void enqueue(Object newItem); 
-    public Object dequeue( ); // remove the earliest added item
-    public void dequeueAll( );
-    public Object peek( ); // retrieve the earliest added item
-}
-```
-
----
-
-### Circular Queue
-
-- 문제점 - `front=0` `back+1`만 해줌 : Rightward drift can cause the queue to **appear full**
-
-  ![image](https://user-images.githubusercontent.com/17509651/39081397-97286a94-457b-11e8-8292-968246822c91.png)
-
-- 해결책 - **Circular Queue** : `front+1` `back+1` 하며 돌리면서 운영하면 된다.
-
-  ![image](https://user-images.githubusercontent.com/17509651/39081414-db235e84-457b-11e8-854f-ad481bba361e.png)
-
-  - `empty` : front passes back 
-
-  - `full` : back catches up front 
-
-    > 골치아프니 numItems 도입으로 해결
-
----
-
-### 1. Array-based Implementation (Circular)
-
-```java
-public class QueueArrayBased implements QueueInterface {
-    final int MAX_QUEUE = 50;
-    private Object items[];
-    private int front, back, numItems; // Circular
-    
-    public QueueArrayBased() {
-        items = new Object[MAX_QUEUE];
-        front = 0;
-        back = MAX_QUEUE - 1;
-        numItems = 0;
-    }
-    public boolean isEmpty() {
-        return (numItems == 0);
-    }
-    public boolean isFull() {
-        return (numItems == MAX_QUEUE);
-    }
-    public void enqueue(Object newItem) {
-        if (!isFull()) {
-          	back = (back+1)%MAX_QUEUE; // MAX-1에서 0 넘어가는 예외를 고려. 이를 제외하면 back = back+1과 동일하다
-            items[back] = newItem;
-            numItems;
-        } else FullException
-    }
-    public Object dequeue() {
-        if (!isEmpty()) {
-          	Object queueFront = items[front];
-            front = (front+1)%MAX_QUEUE; // 직접적 삭제 안해줘도 나중에 차례가 돌아오면 enqueue하면서 저절로 사라지게 됨.
-            --numItems;
-            return queueFront;
-        } else EmptyException
-    }
-    public void dequeueAll() {
-        items = new Object[MAX_QUEUE]; // 기존 데이터는 garbage collection 처리 대상이 됨 (same with stack)
-        front = 0; // array-based에서는 front, back, numItems만 바꾸면 나머진 다 그대로 차지. 낭비.
-        back = MAX_QUEUE -1;
-        numItems = 0;
-    }
-    public Object peek() {
-        if (!isEmpty()) return items[front];
-        else EmptyException
-    }
-}
-```
-
-
-
----
-
-### 2. Reference-based Implementation (Circular)
-
-1. **Linear** Linked List with **2 external references** (front, back)
-
-   > Stack은 Linear Linked List with 1 external reference (stackTop 즉 head)
-
-   ![image](https://user-images.githubusercontent.com/17509651/39081578-e4122072-457e-11e8-9da1-12180cac2c62.png)
-
-2. **Circular** Linked List with **1 external references** (back = lastNode)
-
-   ![image](https://user-images.githubusercontent.com/17509651/39081580-eb689b26-457e-11e8-8e89-ac072f5f6d09.png)
-
-```java
-public class QueueReferenceBased implements QueueInterface {
-    private Node lastNode; // back
-    public QueueReferenceBased() {
-        lastNode = null;
-    }
-    public boolean isEmpty() {
-        return (lastNode == null);
-    }
-    public void enqueue(Object newItem) { // 3개의 화살표 처리
-        Node newNode = new Node(newItem);
-        if (isEmpty()) 
-            newNode.setNext(newNode); // 자신이 자신을 가리킴
-        else {
-            newNode.setNext(lastNode.getNext()); // newNode가 front를 가리키도록 함
-            lastNode.setNext(newNode); // 원래 lastNode였던 녀석이 newNode를 가리키도록 함
+bubbleSort(A[], n) {
+    sorted = true;
+    for (last = n; last >= 2; last--) {
+        for (i=1; i < last; i++) {
+            if (A[i] > A[i+1]) swap A[i] & A[i+1];
+            sorted = false;
         }
-        lastNode = newNode; // lastNode가 newNode를 가리키도록 함
-    }
-    public Object dequeue() {
-        if (!isEmpty()) {
-            Node firstNode = lastNode.getNext();
-            if (firstNode == lastNode) // 자신이 자신을 가리킴 = only 1 node
-                lastNode = null;
-            else // more than 1 node
-            	lastNode.setNext(firstNode.getNext());
-            return firstNode.getItem();
-        } else EmptyException
-    }
-    public void dequeueAll() {
-        lastNode = null; // linked list는 애초에 array처럼 storage를 할당받는 것이 아니므로, lastNode 없애면 다 지울 대상이 된다 (same with stack)
-    }
-    public Object peek() { // lastNode.getNext() is firstNode
-        if (!isEmpty()) return lastNode.getNext().getItem();
-        else EmptyException
-    }
+        if (sorted) return; // 끝나고 나서도 sorted true면 이미 정렬된 array
+    } // sorted 변수는 이미 정렬된 배열이 들어왔을 때 무의미한 순환을 방지해준다.
 }
 ```
 
-- `enqueue`
+---
 
-  ![image](https://user-images.githubusercontent.com/17509651/39081643-1249ccb4-4580-11e8-8dd7-96c3e6dc18a8.png)
+### 3. Insertion Sort
 
-- `dequeue`
-
-  ![image](https://user-images.githubusercontent.com/17509651/39081697-d02fccba-4580-11e8-8b25-bc2a2691bb8c.png)
-
-------
-
-### 3. "ADT List"-based Implementation (Non-Circular)
-
-- Queue을 구현하기 위해 앞에 만들어 놓은 `ListReferenceBased` Class를 가져다가 한 레벨 더 abstraction 해보자 - 5과 참고
-
-- 아래 코드는 **list position 1을 queueFront으로 삼겠다고 그냥 결정해버린 것.** 결정하기 나름.
-
-  > 여기서는 Stack과의 유일한 차이 = enqueue
-  >
-  > Stack은 last가 top에 가있고, Queue는 frist가 front에 간다. remove는 알아서 차이남.
+- 반대로 정렬안된 array를 하나씩 줄여나감. = 정렬된 array를 늘여나감 (수학적귀납법과 유사)
 
 ```java
-public class QueueListBased implements QueueInterface {
-    private ListInterface list; 
+insertionSort(A[], n) {
+    for (i = 2; i < n; i++) {
+        newItem = A[i];
+        for (loc = i-1; loc >= 1 && newItem < A[loc]; loc--)
+            A[loc+1] = A[loc]; // newItem보다 큰 애들은 한 칸씩 뒤로
+        A[loc+1] = newItem; // newItem보다 같거나 작은 첫번째의 index가 리턴됨
+	}
+```
 
-    public QueueListBased( ) {
-        list = new ListReferenceBased( );
+---
+
+### 4. Merge Sort
+
+```java
+mergeSort(A[], p, r) {
+    if (p < r) {
+        q = [(p+r)/2]; 			// 아래꺾쇠
+        mergeSort(A, p, q); 	// sort S1
+        mergeSort(A, q+1, r); 	// sort S2
+        merge(A, p, q, r);		// 후처리
     }
-    public boolean isEmpty() {
-        return list.isEmpty();
+}
+merge(A[], p, q, r) { // A[p..q]와 A[q+1..r]을 병합
+    i = p; j = q+1; t = 1;
+    while (i <= q && j <= r) {
+        if (A[i] <= A[j]) // 등호 없으면 unstable
+            tmp[t++] = A[i++]; // tmp[t] = A[i]; t++; i++;
+        else tmp[t++] = A[j++];
     }
-    public void enqueue(Object newItem) {
-        list.add(list.size()+1, newItem); // 뒤에 add (얘만 stack과 다름!)
-    }
-    public Obejct dequeue() {
-        if (!list.isEmpty()) { // 앞을 remove
-            Object queueFront = list.get(1);
-            list.remove(1);
-            return queueFront;
-        } else EmptyException;
-    }
-    public popAll() {
-        list.removeAll();
-    }
-    public Object peek() {
-        if (!isEmpty) return list.get(1); // 앞을 get
-        else EmptyException
-    }
+    while (i <= q) // S1이 남은 경우
+        tmp[t++] = A[i++];
+    while (j <= r) // S2가 남은 경우
+        tmp[t++] = A[j++];
+    i = p; t = 1;
+    while (i <= r) // 결과를 A에 저장
+        A[i++] = tmp[t++];
 }
 ```
 
+---
+
+### 5. Quick Sort
+
+- 임의의 pivot을 고른다
+
+- 이를 중심으로 더 **작거나 같은** 원소는 왼쪽으로, 더 **큰** 원소는 오른쪽으로 재배치한다
+
+  > Partition 방법은 다양하다 - 아래는 Logically right, but practically unnecessary
+  >
+  > - **등호* 양쪽에 들어가도 될까?** 된다 어차피 pivot과 같은 값은 그 양옆에 붙게 되니깐. 굳이 그렇게 할 필요가 없을 뿐.
+  > - **partition을 다른 array에서 하면 안될까?** 된다. 하지만 in place sorting이 안됨.
+
+```java
+quickSort(A[], p, r) {
+    if (p < r) {
+        q = partition(A, p, r); // pivotIndex (분할 = 선행작업)
+        quickSort(A, p, q-1);	// Left
+        quickSort(A, q+1, r);	// Right
+    }
+}
+partition(A[], p, r) {
+    x = A[r]; 					// pivot 마지막 원소로 잡음
+    i = p-1; 					// i: 1구역의 끝 (작거나 같을 때만 1 증가)
+    for (j=p; j <= r-1; j++) 	// j: 3구역의 시작 (자동으로 1씩 증가)
+        if (A[j] <= x) 			// 등호*
+            swap A[++i] & A[j];	// i++; 이후 swap A[i] & A[j];
+    	// else 그냥 두면 저절로 j 1 증가하여 2구역이 한 칸 넓어짐
+    swap A[i+1] & A[r];
+    return i+1;
+}
+// 1구역: pivot보다 작거나 같은 원소 / 2구역: pivot보다 큰 원소
+// 3구역: 아직 정해지지 않은 원소 / 4구역: pivot 자신
+// for루프 한 바퀴 돌 때마다 3구역 한 칸씩 줄고, 1 또는 2구역 한 칸 늘어남
+// 1구역이 늘어날 땐 i, j 모두 1 증가, 2구역이 늘어날 땐 j만 1 증가
+```
+
+---
+
+### 6. Radix Sort
+
+- 입력이 모두 **최대 n의 자리수를 가진 자연수**인 특수한 경우 사용 가능
+
+- LSD로 정렬 => MSD까지 차례대로 진행
+
+  > **MSD부터 하면 안된다**
+
+- stable sort가 지켜지지 않으면 제대로 정렬 안된다. k번째 자리 수가 같으면, 앞에서 k-1번째 자리까지 제대로 정렬되어 있던 것이 순서가 바뀔 수 있다.
+
+```java
+radixSort(A[], d) {
+    for (j = d; j >= 1; j--)
+        j번째 자리수에 대해 A[]를 stable sort 한다.
+        // 이 부분이 비교정렬이어서는 절대 안된다! 그것만으로도 O(n) 초과해버림
+        // 예: 0~9 10개 공간 준비해놓고 각각의 수를 가진 입력은 해당 공간에 차례로 넣어줌
+}
+```
+
+---
+
+radix를 제외한 알고리즘은 모두 **원소끼리 비교하는 것으로 정렬하는 비교정렬**
+
+비교정렬은 **worst case 수행시간이 절대 Ω(nlogn)**을 밑돌 수 없다. (선형시간 불가)
+
+### In-place Sorting
+
+공간이 주어지면 해당 공간 안에서 sorting을 끝내는 것.
+
+- `mergesort` 이론은 매력적이지만 **in-place sorting**이 불가하여 field에선 잘 안쓰인다.
+
+  auxillary temporary array를 만들어서 2배의 공간을 사용.
+
+- selectionSort, bubbleSort, insertionSort, quickSort, heapSort 모두 해당됨.
+
+  QuickSort가 가장, HeapSort도 field에서 선호된다
+
+### Stable Sort
+
+값이 같은 원소끼리는 정렬 후에 원래의 순서가 바뀌지 않는 성질
+
+- quick (X)
+
+  selection (X) **최대값 중 가장 뒤에 있는 것을 최대값으로 삼으면 안정성을 유지할 수 있다**
+
+- bubble, insertion, radix (O)
+
+  merge (O) **단, 왼쪽과 오른쪽 원소가 같을 때에는 왼쪽부터 꺼내야 한다.**
