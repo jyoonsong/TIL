@@ -59,7 +59,7 @@
   - **`super()` 를 통해 내가 명시적으로 호출**해주거나
   - 그렇지 않은 경우에는 **자동으로 No-parameter Constructor가 호출**된다.
 
-  > 흔한 오류 : superClass에 no-parameter Constructor가 없는데 subClass Constructor에서 `super()` 을 호출해주지 않으면 에러 발생
+  > 흔한 오류 : **superClass에 no-parameter Constructor가 없는데 subClass Constructor에서 `super()` 을 호출해주지 않으면 에러 발생**
 
   Computer Constructor
 
