@@ -53,7 +53,6 @@
 - 수주(?) 표현도 binary tree로 나타내기 좋은 예
 - Infix => postfix, prefix로 바꿀 수 있음.
 
-
 ---
 
 
@@ -71,7 +70,6 @@
 
 - 사실 적절한 예 아님. 이름이 Tom인 사람 한 명 더 있다면 새로운 자료구조 달아줘야 함. array를 한다던지. Binary Search Tree의 노드들은 적어도 다 달라야함.
 - 가장 이상적인 예. 균형이 딱 맞음. 하지만 이런 경우 많이 없다.
-
 
 ---
 
@@ -101,7 +99,6 @@
   - Root 노드 하나 있고
   - left와 right subtree가 각각 height `h-1`인 full binary tree (recursive)
 
-
 ---
 
 
@@ -121,7 +118,6 @@ n(node의 수) = 2^k - 1이어야 full binary tree가 될 수 있다
 - height h
   - level h-1까지는 full
   - level h 즉 맨 아래쪽에는 숫자를 못맞추니깐 왼쪽부터 채워나간다.
-
 
 ---
 
@@ -314,7 +310,6 @@ deleteNode (dNode) {
 deleteNode는 0 또는 1번만 불러질 수 있음! 
 
 - case3에 간다고 해도 그 때 부르는 minNode는 반드시 case 1 또는 2이니깐.
-
 
 ---
 
@@ -523,7 +518,6 @@ h(eight) = k일 때
 
   but 위 정리에 따르면 이런 경우는 많이 발생하지 않는다.
 
-
 ---
 
 
@@ -592,7 +586,6 @@ tree에 기반하여 코드를 설정. 좌0 우1
 
   > 너무 오래걸려서 안 쓰임. 그래도 좋은 예.
 
-
 ---
 
 
@@ -612,7 +605,6 @@ tree에 기반하여 코드를 설정. 좌0 우1
      가운데를 root로 하고 그 좌측은 왼쪽 subtree, 그 우측은 오른쪽 subtree로 만드는 recursive
 
      가운데를 root로 삼는 수고를 하고 나면 자신과 똑같지만 크기가 작은 문제를 만난다
-
 
 ---
 
