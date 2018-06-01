@@ -12,11 +12,11 @@
 
     - **Table (= Dictionary)** : dynamic data set that supports
 
-      `insertion` `deletion` and **`membership test`** (key로 검색해서 꺼낼 수 있음)
+      `insertion` `deletion` and **`membership test`** (key로 검색해서 꺼내고 삭제)
 
     - **Priority Queue** : dynamic data set that supports
 
-      `insertion` `deletion` and **`retrieval of max element`** (priority가장 높은 애만 꺼낼 수 있음)
+      `insertion` `deletion` and **`retrieval of max element`**
 
 
 
@@ -147,3 +147,5 @@
       }
   }
   ```
+
+  
