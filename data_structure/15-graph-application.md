@@ -40,6 +40,7 @@ topologicalSort2(G) {
         if (visited[v] == false) DFS(v);
 }
 DFS(v) {
+    visited[v] = true;
     for (each unvisited vertex u adjacent to v)
         DFS(u);
     LinkedList의 맨 앞에 add(v); // 넣는 순서는 역순. 결과는 앞에서 뒤 순서.
@@ -148,7 +149,7 @@ DFS(v) {
 
   1. d[] = sorted array
      - deleteMin = 상수시간 => `O(V)`
-     - 갱신 = shift O(V) * 최악의 경우 |E|번 일어남 = O(VE) => `O(VE^2)` (longer)
+     - 갱신 = shift O(V) * 최악의 경우 |E|번 일어남 => `O(VE)` (longer)
 
   2. d[] = unsorted array 
      - deleteMin = 검색 시간이 O(V) => `O(V^2)` (longer)
@@ -185,5 +186,86 @@ DFS(v) {
 
 ### 5. Shortest Paths
 
-- **Dijkstra Algorithm**
-- **Euler Circuit**
+[조건] **Weighted DiGraph** (undirected도 양방향 directed로 생각할 수 있음)
+
+[정의] Shortest Path = a path that has the smallest sum of edge weights
+
+- **Dijkstra Algorithm** (단일시작점 최단경로)
+
+  ```java
+  // 쉽알 ver
+  Dijkstra(G, r) {
+      S = {};
+      for (v : V)
+      	d[v] = ∞;
+      d[r] = 0;
+      while (S != V) {
+          v = extractMin(V - S, d);
+          S += {v};
+          for (u : L(v))
+              if (u is in V - S && d[u] > d[v] + weight(v, u)) {
+                  d[u] = d[v] + weight(v, u); // Prim과의 유일한 차이
+                  prev[u] = v;
+              }
+      }
+  } extractMin(Q, d[]) {}
+  
+  // pseudo code (PPT)
+  Dijkstra(G, s) {
+      S = {s};
+      for (v = 1 ... G.size())
+          distance[v] = weight(s,v);
+      for (i = 2 ... G.size()) {
+          Find the smallest distance[v] that is not in S;
+          S = S + {v};
+          for (each vertex u not in S)
+              if (distance[u] > distance[v] + weight(v, u))
+                  distance[u] = distance[v] + weight(v, u); //Relaxation
+      } 
+  }
+  ```
+
+- 최단경로를 형성하는 간선들 = 각 정점이 마지막으로 갱신(Relaxation)되던 시점에 사용된 간선들
+
+- **Greedy Algorithm** 이 global optimality을 달성하는 예외
+
+- **수행시간 = `Θ(E log V)`**  (쉽알 287쪽)
+
+- 모든 edge의 weight이 음이 아닌 경우에만 성립. 
+
+  > 음이 존재하는 경우에는 벨만-포드 알고리즘를 사용. 이 또한 weight합이 음인 cycle은 비허용.
+
+  - 집합 S에 한 번 포함된 정점에 대해서는 최단거리를 다시 계산하지 않으므로 작동 X
+  - 집합 S 내부 정점에 대해서도 계산하면 제대로 작동할까? 여전히 NO. (쉽알 306)
+
+---
+
+### 6. Euler Circuit
+
+**Euler Circuit**: Cycle that uses every edge exactly once (한붓그리기)
+
+- undirected (connected는 당연)
+  - 모든 vertex가 even degree (즉 임의의 vertex가 odd degree => 없다)
+- directed
+  - 모든 정점의 해당 간선이 indegree = outdegree
+
+**Euler Trail**: Path that uses every edge exactly once (시작 != 끝)
+
+- undirected
+  - 시작점과 끝점이 odd degree
+  - 나머지 정점 even degree
+- directed
+  - 시작지점 indegree  = outdegree +1
+  - 도착지점 indegree + 1 = outdegree
+  - 나머지 정점 indegree = outdegree
+
+```java
+void EulerCircuit(int here){
+    int t1;
+    while(!adj[here].empty()) {
+        t1 = adj[here].peek();
+        adj[here].pop();
+        EulerCircuit(t1);
+    }
+    ans.push(S[here][1]); // ans를 reverse하면 답
+```

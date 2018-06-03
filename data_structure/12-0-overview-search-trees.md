@@ -50,9 +50,6 @@ Search Tree의 정의:  `Ti` < keyi < `Ti+1`
   1.1. **Balanced Binary** Search Trees
 
   - Red-black tree
-
-    
-
   - AVL tree
 
   1.2. **Balanced K-ary** Search Trees
