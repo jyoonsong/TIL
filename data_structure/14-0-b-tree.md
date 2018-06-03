@@ -11,16 +11,16 @@
 
   - search tree:  `Ti` < keyi < `Ti+1`
   - balanced search tree: 모든 leaf node는 같은 깊이를 가진다. => guarantees `O(log n)` 
-  - k-ary tree: root를 제외한 모든 노드는 `[k/2] ~ k`개의 key를 가진다. floor 5/2 = 2
+  - k-ary tree: **root를 제외한** 모든 노드는 `[k/2] ~ k`개의 key를 가진다. floor 5/2 = 2
 
   > 분기의 수를 가능하면 늘리되 균형을 맞추기 위해 각 노드가 채울 수 있는 최대 허용량의 반 이상을 채워야 한다
 
 - Node의 구조
 
   - key
-  - 자식 노드 pointer (자식 노드로의 분기를 위한 페이지 번호)
-  - 부모 노드 pointer (부모 노드로의 페이지 번호)
-  - record index (record를 가져올 수 있는 페이지 번호) = pi
+  - 자식 노드 pointer (자식 노드로의 분기를 위한 block number)
+  - 부모 노드 pointer (부모 노드로의 block number)
+  - record index (record를 가져올 수 있는 block number) = pi(사진) = bi(코드)
 
   > 메인 메모리에서 해당 레코드를 찾기 위해 간단한 프로그램이 필요하겠지만 디스크 접근 시간에 비하면 무시할 수 있을 정도로 작은 시간.
 
@@ -32,7 +32,7 @@
 
   ![](/Users/mac/Pictures/node.png)
 
-
+---
 
 ### 1. Implementation
 
@@ -40,6 +40,24 @@
   - binary에서 key와의 비교를 통해 왼쪽 오른쪽 분기를 정하듯이
   - B-tree에선 keyi-1 < x < keyi인 두 키를 찾아 분기해야할 자식을 찾는다.
     자식으로 내려가면 깊이만 하나 내려간 똑같은 검색 문제: recursion으로 푼다.
+
+```java
+BRetrieve(fIndex, fData, rootNum, key) {
+    // fIndex: B-tree file; fData: data file; key: search key
+    // rootNum: block # that contains the root of the tree(subtree)
+    if (rootNum == -1) return null;
+    buf.readBlock(fIndex, rootNum);
+    if (key is one of the 'ki's in the root) { // get data item
+        bi = data-file block # that index record specifies;
+        buf.readBlock(fData, bi);
+        return the item corresponding to key from buf;
+    } else { // branch
+        bi = block # to branch;
+        BRetrieve(fIndex, fData, bi, key);
+    }
+}
+```
+
 - **Insertion**
 
 ```java
@@ -59,6 +77,8 @@ clearOverflow(r) {
 ```
 
 - **Deletion**
+  - 부모에 key1개 가능 - If a removal ever propagates all the way up to the **root**, leaving it with **only one record and only two children**, you are finished because the definition of a B-tree allows this situation. 
+  - 부모에 key 0개 불가 - If a future removal causes the root to have **a single child and no records**, you **remove the root** so that the tree’s height decreases by 1.
 
 ```java
 BTreeDelete(t, x, v) { // v: x를 가지고 있는 node
@@ -80,7 +100,7 @@ clearUnderflow(r) {
 }
 ```
 
-
+---
 
 ### 2. Efficiency
 

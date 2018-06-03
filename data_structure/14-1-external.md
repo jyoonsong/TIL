@@ -107,9 +107,7 @@
 
 ![image](https://user-images.githubusercontent.com/17509651/40883180-87284cf8-6732-11e8-87e3-dbcdfc71a1bb.png)
 
-#### 2.2. B-trees
-
-- 
+#### 2.2. B-trees (따로)
 
 #### 2.3. Multiple Indexing
 
