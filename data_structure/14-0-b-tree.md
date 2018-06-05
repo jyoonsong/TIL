@@ -11,7 +11,7 @@
 
   - search tree:  `Ti` < keyi < `Ti+1`
   - balanced search tree: 모든 leaf node는 같은 깊이를 가진다. => guarantees `O(log n)` 
-  - k-ary tree: **root를 제외한** 모든 노드는 `[k/2] ~ k`개의 key를 가진다. floor 5/2 = 2
+  - (k+1)-ary tree: **root를 제외한** 모든 노드는 `[k/2] ~ k`개의 key를 가진다. floor 5/2 = 2
 
   > 분기의 수를 가능하면 늘리되 균형을 맞추기 위해 각 노드가 채울 수 있는 최대 허용량의 반 이상을 채워야 한다
 
@@ -27,7 +27,7 @@
   ```markdown
   key = n byte, 페이지 번호 = m byte, 디스크 1블록 = B byte일 때 
   최대 `B+n/2m+n`분기, 최대 `B+n/2m+n - 1`개의 key 가질 수 있다.
-  m + m * k + n * (k-1) + m * (k-1) = (2m+n)k - n = B이므로 k = `B+n/2m+n`
+  m + m * k + n * (k-1) + m * (k-1) = (2m+n)k - n = B이므로 `k = B+n/2m+n`
   ```
 
   ![](/Users/mac/Pictures/node.png)

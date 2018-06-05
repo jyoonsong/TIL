@@ -18,7 +18,7 @@
 
       `insertion` **`deletion` and `retrieval of max element`** 
 
-
+---
 
 ## Priority Queue
 
@@ -45,7 +45,7 @@
     - 우선순위 제일 큰 놈에게 접근하는 시간 = 상수 시간이 걸린다
     - 중복을 허용한다. If two elements have the same priority, they are served according to their order in the queue. 하면 되기 때문.
 
-
+---
 
 ### 2. Heap: 대표적인 Priority Queue
 
@@ -61,7 +61,7 @@
   - children = `2i` & `2i+1`
   - parent = `[i/2]` (내림)
 
-
+---
 
 ### 3. Implementation 
 
@@ -162,7 +162,7 @@
     }
     ```
 
-
+---
 
 
 ### 4. Heapsort
