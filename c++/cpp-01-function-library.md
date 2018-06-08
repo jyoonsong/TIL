@@ -270,6 +270,13 @@
 
   - Executable Unit
 
+- **Library Components** (lecture17)
+
+  - `Rational.h` : class definitions and library function prototypes
+  - `Rational.cpp` : Implementation - member & auxiliary function (assisting global functions that provide expected but non-member capabilities) definitions
+  - `Rational.obj` : Translated version of Rational.cpp (linkable)
+  - `Rational.lib` : Library version of Rational.obj that is more readily(쉽게) linkable
+
 - **Library Header File**
 
   - Describes library components. 
