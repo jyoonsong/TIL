@@ -89,13 +89,13 @@ cin >> Length >> Width;
 cout << "\"" << Response << "\"" << endl; // endl == ln (생략가능)
 ```
 
-- **`fstream` : File Processing**
+- **`fstream` : File Processing** 
 
 ```c++
 #include <fstream>
 using namespace std;
 int main() {
-    ifstream fin("mydata.txt");
+    ifstream fin("mydata.txt"); // FileNotFoundException 없음. 그냥 지나침
     int valueProcessed = 0;
     float valueSum = 0;
     float value;
@@ -114,6 +114,24 @@ int main() {
         return 1;
     }
 }
+```
+
+```c++
+ifstream sin("in.txt");     // extract from in.txt
+ofstream sout("out.txt");   // insert to out.txt
+string s;
+while (sin >> s)
+    sout << s << endl;
+sin.close();    // done with in.txt
+sout.close();   // done with out.txt
+
+sin.open("in2.txt");     // now extract from in.txt
+sout.open("out.txt",     // now append to out.txt
+(ios_base::out | ios_base::app)); // OPEN MODE: out은 app은 append
+while (sin >> s)
+    sout << s << endl;
+sin.close();
+sout.close();
 ```
 
 
@@ -195,44 +213,4 @@ do {
         Reply = 'n';
 } while (Reply != 'y' && Reply != 'n');
 ```
-
-
-
-## 05. Functions
-
-- Invocation process (function call)
-  - *flow of control* is temporarily transferred to the invoked function 
-    - Correspondence established btw actual parameters of the invocation with the formal parameters of the definition
-    - Local objects are also maintained in the **invocation’s activation record**. Even main() has a record (모두 activation record로 관리된다)
-    - **Activation record** is large enough to store values associated with each object that is defined by the function (함수 안의 변수 충분히 담을 만한 크기)
-    - Other information may also be maintained in the invocation's activation record - Possibly a **pointer to the current statement being executed and a pointer to the invoking statement** (함수와 원래 자리 서로 포인터도)
-    - Next statement executed is the first one in the invoked function
-    - After function completes its action, flow of control is returned to the invoking function and the return value is used as value of invocation
-- Execution Process
-  - Function body of invoked function is executed
-  - Flow of control then returns to the invocation statement
-  - The return value of the invoked function is used as the value of the invocation expression
-
-
-
-## 06. Standard Libraries
-
-#### `fstream`
-
-#### `assert` Function
-
-- **terminate** program execution when certain types of **elusive errors** that are very difficult to catch occur.
-  - 예: divisiion by zero
-
-```c++
-#define NDEBUG // disable assert()
-#include <cassert>
-
-assert(2+2 == 4) // true면 execute
-    cout << "first\n";
-assert(2+2 == 5) // false면 terminate
-    cout << "first\n"; // 출력안됨 Assertion failed Aborted
-```
-
-
 
