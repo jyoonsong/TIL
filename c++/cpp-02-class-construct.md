@@ -128,6 +128,228 @@ S.SetColor(Black);  	// X
 
 - **ADT**
 
-  - 정의: a class of objects whose logical behavior is defined by a set of values & operations
-  - 예제: Rational Number
+  정의: a class of objects whose logical behavior is defined by a set of values & operations
+
+  예제: Rational Number
+
+  - Client
+
+    `MyProgram.cpp` 
+    => Preprocessor(combines iostream, rational.h) 
+    => `Compilation Unit` 
+    => Compiler 
+    => `MyProgram.obj` 
+    => Linker(combine Rational Library file with MyProgram.obj) 
+    => `MyProgram.exe`
+
+  ```c++
+  #include <iostream>
+  using namespace std;
+  #include "rational.h" // provides access to the class definition & auxiliary function prototypes, NOT definition
+  int main() {
+      Rational r;
+      Rational s;
+      cout << "Enter two rationals(a/b): ";
+      cin >> r >> s;
+      Rational Sum = r + s;
+      cout << r << " + " << s << " = " << Sum;
+      return 0;
+  }
+  ```
+
+  - Header File
+
+    1. Preprocessor statements : ensure 1 inclusion per translation unit
+    2. Class definition
+    3. Library Prototypes
+
+    > `const` 붙이느냐 마느냐
+
+    => 그 안에서 결과적으로 Getter를 쓰느냐 Setter를 쓰느냐. 전자면 붙이고 후자면 안 붙임.
+
+  ```c++
+  /* Preprocessor Statements */
+  #ifndef RATIONAL_H
+  #define RATIONAL_H
+  
+  /* Class Definition */
+  class Rational {
+      
+      //For everyone including clients
+      public:
+      	// default constructor
+      	Rational();
+      	// specific constructor
+      	Rational(int numer, int denom = 1);
+          // arithmatic facilitators
+          Rational Add(const Rational &r) const;
+          Rational Multiply(const Rational &r) const;
+          // stream facilitators
+          void Insert(ostream &sout) const;
+          void Extract(istream &sin) const;
+      
+      //For member functions of Rational & classes derived from Rational 
+      protected:
+          // inspectors
+          int GetNumerator() const;
+          int GetDenominator() const;
+          // mutators
+          void SetNumerator(int numer);
+          void SetDenominator(int denom);
+      
+      //For Rational member functions
+      private:
+          // data members
+          int NumeratorValue;
+          int DenominatorValue;
+  }; // 세미콜론 해줘야함!
+  
+  /* Library Prototypes */
+  // Auxiliary Operator Prototypes
+  Rational operator+(const Rational &r, const Rational &s); // Add
+  Rational operator*(const Rational &r, const Rational &s); // Multiply
+  ostream& operator<<(ostream &sout, const Rational &s); // Insert
+  istream& operator>>(istream &sin, const Rational &r); // Extract
+      
+  #endif
+  ```
+
+  - Implementation
+
+    > Object를 명시해야 하는가?
+
+    - Class member functions 내에서: 당연히 대상 object 명시 안해줘도 됨
+    - Auxiliary Functions 내에서: 멤버 아니므로 object 명시해줘야 함. `object.member`
+
+    > default parameter `(int denom = 1)`은 한 곳에서만! 
+    > header에 있는데 여기서 또 하면 에러.
+
+  ```c++
+  #include <iostream> // Header 부르기 전에 해줘야 함!
+  #include <string>
+  #include <cassert>
+  using namespace std; // 잊지말것
+  #include <rational.h> // Header File
+  // Default Constructor
+  Rational::Rational() {
+      SetNumerator(0);
+      SetDenominator(1);
+  }
+  Rational::Rational(int numer, int denom){ // denom = 1 header에만!!
+      SetNumerator(numer); // 예 Rational u(2); // u = 2/1
+      SetDenominator(denom);
+  }
+  // inspectors
+  int Rational::GetNumerator() const {
+      return NumeratorValue;
+  }
+  int Rational::GetDenominator() const {
+   	return DenominatorValue;
+  }
+  // mutators
+  void Rational::SetNumerator(int numer) {
+      NumeratorValue = numer;
+  }
+  void Rational::SetDenominator(int denom) {
+      if (denom != 0)
+          DenominatorValue = denom;
+      else {
+          cerr << "Illegal denominator: " << denom << "using 1" << endl;
+          DenominatorValue = 1;
+      }
+  }
+  // arithmatic facilitators
+  Rational Rational::Add(const Rational &r) const {//Get=>const
+      int a = GetNumerator();
+      int b = GetDenominator();
+      int c = r.GetNumerator();
+      int d = r.GetDenominator();
+      return Rational(a*d + b*c, b*d);
+  }
+  Rational Rational::Multiply(const Rational &r) const {//Get=>const
+      int a = GetNumerator();
+      int b = GetDenominator();
+      int c = r.GetNumerator();
+      int d = r.GetDenominator();
+      return Rational(a*c, b*d);
+  }
+  // stream facilitators
+  void Rational::Insert(ostream &sout) const {//Get=>const
+      sout << GetNumerator() << '/' << GetDenominator();
+      return;
+  }
+  void Rational::Extract(istream &sin) const {//Set=>NOT const
+      int numer, denom;
+      char slash;
+      sin >> numer >> slash >> denom;
+      assert(slash == '/');
+      SetNumerator(numer);
+      SetDenominator(denom);
+      return;
+  }
+  // Auxiliary Operator Prototypes
+  Rational operator+(const Rational &r, const Rational &s) {//Get=>const
+      return r.Add(s); // t.Add(s)을 t+s 로 할 수 있게 함.
+  }
+  Rational operator*(const Rational &r, const Rational &s) {//Get=>const
+      return r.Multiply(s); // t.Multiply(s)을 t*s 로 할 수 있게 함.
+  }
+  ostream& operator<<(ostream &sout, const Rational &s) { //Get=>const
+      r.Insert(sout); // t.Insert(cout)을 cout << t 로 할 수 있게 함.
+      return sout;
+  }
+  istream& operator>>(istream &sin, Rational &r) { // Set => NOT const
+      r.Extract(sin); // t.Extract(cin)을 cin >> t;로 할 수 있게 함.
+      return sin;
+  }
+  ```
+
+  - Gang of Three
+
+    > 모두 **default로 제공**. Custom 정의할 수 있다
+
+    **[1] Copy Constructor**
+
+    - Default copy construction
+
+      : **Shallow Copying** = Copy of one object to another in a **bit-wise** manner
+
+      : 굳이 **만들어주지 않아도 `Rational s(a)` 알아서 생성**된다
+
+    - Custom copy construction
+
+      : NOT bit-by-bit. Copy only necessary parts (Rational은 사실 거의 불필요)
+
+    **[2] Assignment Operator**
+
+    ​	: Copy source to target and return target (A = B = C)
+
+    ​	: 굳이 **만들어주지 않아도 `Rational t = b` 알아서 생성**된다
+
+    **[3] Destructor**
+
+    ​	: Clean up the object when it goes out of scope
+
+  ```c++
+  // Custom Copy Constructor
+  Rational::Rational(const Rational &r){
+      int a = r.GetNumerator();
+      int b = r.GetDenominator();
+      SetNumerator(a);
+      SetDenominator(b);
+  }
+  Rational& Rational::operator =(const Rational &r) {
+      int a = r.GetNumerator();
+      int b = r.GetDenominator();
+      SetNumerator(a);
+      SetDenominator(b);
+      return *this; // object whose member function was invoked
+  }
+  // Rational Destructor
+  Rational::~Rational() {
+      // Nothing to do
+  }
+  ```
+
+  
 

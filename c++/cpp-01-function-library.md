@@ -260,11 +260,11 @@
 
   - Source Program
 
-  - Process **preprocessor directives** to produce => translation unit
+  - Process **preprocessor directives** to produce => translation/compilation unit
 
-  - Check translation unit for legal syntax and **compile** it into => an object file
+  - Check translation unit for legal syntax and **compile** it into => an object file `.obj`
 
-  - **Link** object file with standard object files and other object files to produce => an executable unit
+  - **Link** object file with standard object files and other object files to produce => an executable unit `.exe`
 
     > Linker는 header file에게 access to compiled versions of source files 제공
 
