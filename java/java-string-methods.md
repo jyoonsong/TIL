@@ -46,7 +46,7 @@
 
 **6. 지정된 범위의 부분 문자열**
 
-- `subString(int, int)` - String. 
+- `substring(int, int)` - String. 
 
   > 프로그래밍할 때 대부분의 구간은 시작점 포함, 끝점 미포함. [int, int)
 
