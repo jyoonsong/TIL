@@ -295,7 +295,7 @@ S.SetColor(Black);  	// X
       return r.Multiply(s); // t.Multiply(s)을 t*s 로 할 수 있게 함.
   }
   ostream& operator<<(ostream &sout, const Rational &s) { //Get=>const
-      r.Insert(sout); // t.Insert(cout)을 cout << t 로 할 수 있게 함.
+      s.Insert(sout); // t.Insert(cout)을 cout << t 로 할 수 있게 함.
       return sout;
   }
   istream& operator>>(istream &sin, Rational &r) { // Set => NOT const
