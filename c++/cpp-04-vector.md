@@ -111,9 +111,9 @@
 
   - resize
 
-    resize(8, 2) => 그대로 두고 차이를 addition. 00002222
+    `resize(8, 2)` => 그대로 두고 차이를 addition. 00002222
 
-    resize(3, 1) => 000
+    `resize(3, 1)` => 000
 
   - pop_back() : last element remove
 
