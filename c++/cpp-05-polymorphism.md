@@ -124,7 +124,7 @@ Rational Min(const Rational &a, const Rational &b) {
 
 ## Virtual Functions
 
-- placeholder in the Shape class with specialized definitions in derived class
+: placeholder in the Shape class with specialized definitions in derived class
 
 - **type of object to which the pointer refer** determines which function is invoked
 
