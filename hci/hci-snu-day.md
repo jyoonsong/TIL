@@ -1,4 +1,4 @@
-# HCI x SNU 
+# HCI x SNU Day
 
 > Aug 10, 2018
 
