@@ -9,7 +9,7 @@
 
 ## 01. Arrays
 
-- Terminology
+- **Terminology**
 
   - elements
 
@@ -25,7 +25,7 @@
 
       Index range = 0…n-1 where n is programmer-defined constant expression
 
-- Syntax
+- **Syntax**
 
   `BaseType NameOfList [ SizeExp ];`
 
