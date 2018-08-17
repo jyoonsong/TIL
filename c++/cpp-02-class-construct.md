@@ -163,7 +163,7 @@ S.SetColor(Black);  	// X
     2. Class definition
     3. Library Prototypes
 
-    > `const` 붙이느냐 마느냐
+      > `const` 붙이느냐 마느냐
 
     => 그 안에서 결과적으로 Getter를 쓰느냐 Setter를 쓰느냐. 전자면 붙이고 후자면 안 붙임.
 
