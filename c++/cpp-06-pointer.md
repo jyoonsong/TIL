@@ -27,7 +27,7 @@
 
 ## Pointer
 
-**object** whose value represents the **location of another object**
+: **object** whose value represents the **location of another object**
 
 - pointer types for each type of object
 
