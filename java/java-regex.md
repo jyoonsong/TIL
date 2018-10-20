@@ -16,16 +16,16 @@
 
   ```java
   String patternStr = "(?<sign>[[+][-]]?)(?<num>[0-9]+)";
-          String str = " +1000 ";
+  String str = " +1000 ";
 
-          Pattern pattern = Pattern.compile(patternStr);
-          Matcher matcher = pattern.matcher(str);
+  Pattern pattern = Pattern.compile(patternStr);
+  Matcher matcher = pattern.matcher(str);
 
-          while (matcher.find()) {
-              System.out.println(matcher.group() + " beginning at " + matcher.start() + " and ending at " + matcher.end()); // "+1000", 1, 5
-              System.out.println(matcher.group("sign")); // +
-              System.out.println(matcher.group("num")); //1000
-          }
+  while (matcher.find()) {
+      System.out.println(matcher.group() + " beginning at " + matcher.start() + " and ending at " + matcher.end()); // "+1000", 1, 5
+      System.out.println(matcher.group("sign")); // +
+      System.out.println(matcher.group("num")); //1000
+  }
   ```
 
   - String patternStr에 찾기를 원하는 문자열의 집합을 정규표현식으로 나타낸 다음
