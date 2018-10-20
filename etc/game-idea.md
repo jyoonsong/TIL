@@ -2,6 +2,8 @@
 
 ### How to Play
 
+![](keyword-hunter.jpg)
+
 1. 사전작업
    - 팀별로 A~E 팀원 배정 (6명인 팀은 나와서 키워드 선정?)
    - 개별로 Keyword 조용히 확인
