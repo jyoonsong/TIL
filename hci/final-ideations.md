@@ -1,4 +1,8 @@
-- **Crowd Work** (Computer-supported Cooperative Work)
+## Final Project Ideations
+
+> 아직 광범위
+
+- Crowd Work** (Computer-supported Cooperative Work)
   - crowdsourcing for complex goals
     - [How Crowdsourcing Workflows Constrain Complex Work](https://dl.acm.org/citation.cfm?id=3134724)
 - **Human-Robot Interaction**
