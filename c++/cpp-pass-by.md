@@ -167,3 +167,41 @@ passByPtrRef(p);
 
 
 ![](/Users/mac/Desktop/dev/TIL/c++/screenshot.png)
+
+
+
+
+
+# Double Pointer (Pointer to a Pointer)
+
+> https://www.youtube.com/watch?v=ZMDYsr9scGo
+
+```c++
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+int main() {
+    int box = 5;
+    int * ptr = &box;	// pointer
+    int ** dPtr = &ptr;	// pointer to a pointer
+    
+    cout << "box holds: " << box << endl;		// 5
+    cout << "box lives at: " << &box << endl;	// 0xA
+    
+    cout << "ptr points to address: " << ptr << endl; // 0xA
+    cout << "thing that ptr points to has value: " << *ptr; // 5
+    cout << "ptr lives at: " << &ptr << endl; // 0xB
+    
+    cout << "dPtr points to: " << dPtr << endl; // 0xB
+    cout << "thing that dPtr points to has value: " << *dPtr; // 0xA
+    cout << "ptr that dPtr points to points to value: " << **dPtr; // 5
+    cout << "dPtr lives at: " << &dPtr; // 0xC
+}
+```
+
+| Thing:     | `dPtr` | `ptr` | `box` |
+| ---------- | ------ | ----- | ----- |
+| Values:    | 0xB    | 0xA   | 5     |
+| Addresses: | 0xC    | 0xB   | 0xA   |
+
