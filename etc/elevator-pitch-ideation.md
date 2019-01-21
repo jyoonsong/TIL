@@ -22,12 +22,9 @@
 3. **crowdsourcing based web navigation for visually impaired users**
 
    - current approach
-
-     : screen readers only allow sequential access to textual information
-
+     - screen readers only allow sequential access to textual information
    - research problem
-
-     : more efficient way for visually impaired users to navigate web
+     - more efficient way for visually impaired users to navigate web
 
    
 
