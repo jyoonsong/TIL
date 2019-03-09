@@ -87,5 +87,5 @@
 
   - Create Career Ladders
   - Improve Task Design through Better Communication
-  - Facilitate Learning (김주호 교수님)
+  - Facilitate Learning (Juho Kim)
 
