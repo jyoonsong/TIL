@@ -47,51 +47,27 @@
 
 
 
-### 몽고 DB 연결
+### Nodemon
 
-* mongodb.com 로그인
+- 소스를 변경할 때 그걸 감지해서 자동으로 서버를 재시작해주는 tool
 
-* build a new cluster 
+  (그 전까진 소스 변경 후 다시 npm run start 해야 했음)
 
-  * aws
-  * 가장 가까운 free tier (singapore)
-  * MO Sandbox 선택
-  * cluster name 원하는 것으로 바꾸기
-  * create cluster 버튼
+- 다운로드
 
-* MongoDb 유저 생성
+  `npm install nodemon --save-dev`
 
-  * connect 버튼
-  * create a mongoDB user
-  * username, password 원하는 것 적고 기억해놓은 다음 create MongoDB user
-  * Conncet Web application
-  * connection string only 부분을 copy해서 기록해두기
+  (개발 모드에서만 사용, 배포에서는 사용하지 않음)
 
-* Mongoose
+- 시작할 때 nodemon으로 시작하기 위해 start 스크립트 수정
 
-  * 몽고DB를 편하게 쓸 수 있는 object modeling tool
+  ```json
+  "scripts": {
+    "start": "node index.js",
+    "backend": "nodemon index.js",
+    ...
+  }
+  ```
 
-  * `npm install mongoose --save`
-
-    ```js
-    // index.js
-    const express = require("express");
-    const app = express();
-    const port = 3000; 
-    
-    const mongoose require('mongoose')
-    mongoose.connect('mongodb+srv://username:password쳐주기@react~~', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-     	useFindAndModify: false
-    }).then(() => console.log("MongoDB connected..."))
-      .catch(err => console.log(err))
-    
-    app.get('/', (req, res) => res.send("Hello world!"))
-    
-    app.listen(port, () => console.log("Example app listening on port ${port}"))
-    ```
-
-    
+  앞으로는 `npm run backend`로 시작
 
