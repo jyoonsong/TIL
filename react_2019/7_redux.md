@@ -1,3 +1,39 @@
+### 개념
+
+- Redux 데이터 Flow 
+
+  - strict **unidirectional** data flow
+  - action => reducer => store
+  - action <=dispatch(action)= react component <=subscribe=store
+
+- **action**
+
+  - a plain object describing what happened
+
+    ```js
+    {
+      type: "LIKE_ARTICLE", //좋아요했다
+      articleId: 42
+    }
+    ```
+
+- **reducer**
+
+  - a function describing how the application's state changes
+
+    ```js
+    (previousState, action) => nextState
+    ```
+
+  - 이전 state가 action object를 거쳐 next state가 되었다.
+
+- **store**
+
+  - the object that brings state together
+  - a store holds the whole state tree of your application
+  - the only way to change the state inside it is to dispatch an action on it.
+  - A store is not a class. It's just an **object** with few methods on it.
+
 ### vanilla-redux
 
 ```javascript
