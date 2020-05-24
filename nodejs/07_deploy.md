@@ -74,7 +74,7 @@ const io = require('socket.io-client');
 const socket = io();
 ```
 
-터미널
+터미널 (한 번만 해주면 됨)
 
 ```js
 heroku features:enable http-session-affinity
