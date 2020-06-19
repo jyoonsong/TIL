@@ -2,146 +2,117 @@
 
 ### 1.4. Bipartite Graphs
 
-- **Edge attributes in NetworkX**
+- **definition**
 
-  - **construction**
+  a graph whose nodes can be split into two sets L and R 
 
-    ```python
-    G = nx.MultiGraph()
-    G.add_edge("A", "B", weight = 6, relation = "family")
-    G.add_edge("B", "C", weight = 13, relation = "friend")
-    ```
+  and every edge connects an node in L with a node in R
+  
+  (all the edges go from one set of nodes to another set of nodes)
+  
+  - ex) Fans (L) - Basketball Teams (R)
+  - edge: a particular fan <u>is a fan of</u> a particular team
+    - nodes: fans, players
 
-  - **accessing the full list of edges**
+- **construction**
 
-    ```python
-    # list of all edges
-    G.edges() 
-    # output: [("A", "B"), ("C", "B")]
-    ```
+  ```python
+  from networkx.algorithms import bipartite
+  B = nx.Graph() # no separate class for bipartite graphs
+  B.add_nodes_from(["A", "B", "C", "D", "E"], bipartite = 0) # label one set of nodes 0
+  B.add_nodes_from([1, 2, 3, 4], bipartite = 1) # label other set of nodes 1
+  B.add_edges_from([("A", 1), ("B", 1), ("C", 1), ("C", 3), ("D", 2), ])
+  ```
 
-    ```python
-    # list of all edges with attributes
-    G.edges(data = True) 
-    # output: [("A", "B", {"relation": "family", "weight": 6}), ("C", "B", {"relation": "friend", "weight": 13})]
-    ```
+- **checking if a graph is bipartite**
 
-    ```python
-    # list of all edges with attribute "relation"
-    G.edges(data = "relation") 
-    # output: [("A", "B", "family"), ("C", "B", "friend")]
-    ```
+  ```python
+  bipartite.is_bipartite(B)
+  # output: True
+  
+  B.add_edge("A", "B")
+  bipartite.is_bipartite(B)
+  # output: False
+  
+  B.remove_edge("A", "B")
+  ```
 
-  - **accessing attributes of a specific edge**
+- **checking if a set of nodes is a bipartition of a graph**
 
-    ```python
-    # dictionary of attributes of edge (A, B)
-    G.edge["A"]["B"] 
-    # output: {"relation": "family", "weight": 6}
-    ```
+  ```python
+  X = set([1, 2, 3, 4])
+  bipartite.is_bipartite_node_set(B, X)
+  # output: True
+  
+  X = set(["A", "B", "C", "D", "E"])
+  bipartite.is_bipartite_node_set(B, X)
+  # output: True
+  
+  X = set([1, 2, 3, 4, "A"])
+  bipartite.is_bipartite_node_set(B, X)
+  # output: False
+  ```
 
-    - undirected weighted graph
+- **getting each set of nodes of a bipartite graph**
 
-    ```python
-    # undirected graph, order doesn't matter
-    G.edge["B"]["C"]["weight"]
-    G.edge["C"]["B"]["weight"]
-    # output: 13
-    ```
+  ```python
+  bipartite.sets(B)
+  # output: ({"A", "B", "C", "D", "E"}, {1, 2, 3, 4})
+  
+  B.add_edge("A", "B")
+  bipartite.sets(B)
+  # outpu: NetworkXError: Graph is not bipartite
+  
+  B.remove_edge("A", "B")
+  ```
 
-    - directed weighted network
+- **Projected graphs**
 
-    ```python
-    # directed weighted network, order matters
-    G = nx.DiGraph()
-    G.add_edge("A", "B", weight = 6, relation = "family")
-    G.add_edge("B", "C", weight = 13, relation = "friend")
-    
-    G.edge["B"]["C"]["weight"]
-    # output: 13
-    G.edge["C"]["B"]["weight"]
-    # output: KeyError: 'C'
-    ```
+  - **L-Bipartite graph projection**: Network of nodes in group L, where a pair of nodes is connected if they have a common neighbor in R in the bipartite graph. 
 
-    - undirected weighted multigraph
+    ex) network of fans who have a team in common
 
-    ```python
-    G = nx.MultiGraph()
-    G.add_edge("A", "B", weight = 6, relation = "family")
-    G.add_edge("A", "B", weight = 18, relation = "friend")
-    G.add_edge("B", "C", weight = 13, relation = "friend")
-    
-    G.edge["A"]["B"] # one dictionary of attributes per (A, B) edge
-    # output: {0: {"relation": "family", "weight": 6}, 1: {"relation": "friend", "weight": 18}}
-    
-    G.edge["A"]["B"][0]["weight"] # undirected, order doesn't matter
-    # output: 6
-    ```
+  - (You would have a similar definition for **R-Bipartite graph projection**)
 
-    - directed weighted multigraph
+    ex) network of teams who have a fan common
 
-    ```python
-    G = nx.MultiDiGraph()
-    G.add_edge("A", "B", weight = 6, relation = "family")
-    G.add_edge("A", "B", weight = 18, relation = "friend")
-    G.add_edge("B", "C", weight = 13, relation = "friend")
-    
-    G.edge["A"]["B"][0]["weight"]
-    # output: 6
-    G.edge["B"]["A"][0]["weight"]
-    # output: KeyError: 'A'
-    ```
+    => we need weights on the edges!
 
-- **Node attributes in NetworkX**
+  ```python
+  B = nx.Graph()
+  B.add_edges_from([("A", 1), ("B", 1), ("C", 1), ("D", 1), ("H", 1), ("B", 2), ("C", 2), ("D", 2), ("E", 2), ("G", 2), ("E", 3), ("F", 3), ("H", 3), ("J", 3), ("E", 4), ("I", 4), ("J", 4) ])
+  
+  X = set(["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]) # fans
+  P = bipartite.projected_graph(B, X)
+  # output: network of fans who have a team in common
+  
+  X = set([1, 2, 3, 4]) # teams
+  P = bipartite.projected_graph(B, X)
+  # output: network of teams who have a fan common
+  ```
 
-  ex) number of times coworkers had lunch together in one year => nodes colored by their role in the company
+  - **L-BIpartite weighted graph projection**: An L-Bipartite graph projection with weights on the edges that are proportional to the number of common neighbors between the nodes
 
-  - **adding node attributes**
+    ex) weighted network of teams who have a fan common
 
-    ```python
-    G = nx.Graph()
-    G.add_edge("A", "B", weight = 6, relation = "family")
-    G.add_edge("B", "C", weight = 13, relation = "friend")
-    
-    G.add_node("A", role = "trader")
-    G.add_node("B", role = "trader")
-    G.add_node("C", role = "manager")
-    ```
+  ```python
+  X = set([1, 2, 3, 4])
+  P = bipartite.weighted_projected_graph(B, X)
+  ```
 
-  - **accessing the full list of nodes**
-
-    ```python
-    # list of all nodes
-    G.nodes()
-    # output: ["A", "C", "B"]
-    ```
-
-    ```python
-    # list of all nodes with attributes
-    G.nodes(data = True)
-    # output: [("A", {"role": "trader"}), ("C", {"role": "manager"}), ("B", {"role": "trader"})]
-    ```
-
-  - **accessing node attributes**
-
-    ```python
-    # specify which node and which attribute
-    G.node["A"]["role"]
-    # output: "manager"
-    ```
+  
 
 ### 정리
 
-| what                            | code                                                    |
-| ------------------------------- | ------------------------------------------------------- |
-| adding node and edge attributes | `G = nx.Graph()`                                        |
-|                                 | `G.add_edge("A", "B", weight = 6, relation = "family")` |
-|                                 | `G.add_node("A", role = "trader")`                      |
-| accessing node and attributes   | `G.nodes(data = True)`                                  |
-|                                 | `G.node["A"]["role"]`                                   |
-| accessing edge attributes       | `G.edges(data = True)`                                  |
-|                                 | `G.edges(data = "relation")`                            |
-|                                 | `G.edge["A"]["B"]["weight"]`                            |
+- No separate class for bipartite graphs in NetworkX
+  - Use `Graph(), DiGraph(), MultiGraph()` etc
+  - Use `from networkx.algorithms import bipartite` for bipartite related algorithms (Many algorithms only work on `Graph()`)
 
- 
+| what                                                | code                                       |
+| --------------------------------------------------- | ------------------------------------------ |
+| check if B is bipartite                             | `bipartite.is_bipartite(B)`                |
+| check if node set X is a bipartition                | `bipartite.is_bipartite_node_set(B, X)`    |
+| get each set of nodes of bipartite graph B          | `bipartite.sets(B)`                        |
+| get the bipartite projection of node set X          | `bipartite.projected_graph(B, X)`          |
+| get the weighted bipartite projection of node set X | `bipartite.weighted_projected_graph(B, X)` |
 
